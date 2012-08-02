@@ -34,9 +34,11 @@ module WeatherJp
       def to_s
         word = "#{city_name}の"
         word << "#{day}の天気は"
-        word << "#{forecast}、"
-        word << "最高気温#{max_temp}度、"
-        word << "降水確率は#{rain}%です。"
+        word << "#{forecast} "
+        word << "最高気温#{max_temp}度 " if max_temp
+        word << "最低気温#{min_temp}度 " if min_temp
+        word << "降水確率は#{rain}% " if rain
+        word << "です。"
         word
       end
 
