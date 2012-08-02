@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 require "weather_jp/version"
 require 'uri'
 require 'open-uri'
