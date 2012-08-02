@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "weather_jp"
   gem.require_paths = ["lib"]
   gem.version       = WeatherJp::VERSION
+
+  gem.add_dependency "nokogiri", "~>1.5.5"
 end
