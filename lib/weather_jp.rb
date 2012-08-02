@@ -55,19 +55,15 @@ module WeatherJp
     private
     def set_weathers
       begin
-        data = get_weather_data
-        data.pop
         weathers = Array.new
-        data.each do |words|
-          weather = Hash.new
-          words.delete!('"')
-          weather[:day] = words.slice!(/(.*?):/).delete(':')
-          weather[:forecast] = 
-            words.slice!(/\s(.*?)\./).delete('.').delete(" ")
-          weather[:max_temp] = 
-            words.slice!(/(.*?)\.|\:/).slice(/(\d+)/)
-          weather[:rain] = words.slice(/(\d+)/)
-          weathers << weather
+        get_weather_data.each do |i|
+          h = Hash.new
+          h[:day] = i.slice(/(.*?):\s+(.*?)\./, 1)
+          h[:forecast] = i.slice(/(.*?):\s+(.*?)\./, 2)
+          h[:max_temp] = i.slice(/(最高).*?(\d+)/u, 2)
+          h[:min_temp] = i.slice(/(最低).*?(\d+)/u, 2)
+          h[:rain] = i.slice(/(降水確率).*?(\d+)/u, 2)
+          weathers << h
         end
         weathers
       rescue
@@ -103,7 +99,9 @@ module WeatherJp
           "weadegreetype=C&culture=ja-JP")
           rss = RSS::Parser.parse(uri, false)
           str = rss.channel.item(0).description
-          remove_html_tag(str).split(/%/)
+          data = remove_html_tag(str).split(/%/)
+          data.pop
+          data.map {|i| i.delete!('"') }
       rescue
         raise StandardError,
           "the MSN weather sever may be downed, or got invaild city code"
