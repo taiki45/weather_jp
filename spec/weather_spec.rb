@@ -129,10 +129,24 @@ describe "Weather" do
     end
 
     it "should return DayWeather object" do
-      @weather.get_weather(0).class.should == WeatherJp::Weather::DayWeather
+      @weather.get_weather(0).class.
+        should == WeatherJp::Weather::DayWeather
+    end
+  end
+  
+  describe "#today, #tomorrow, #day_after_tomorrow" do
+    it "should not error when call #today or something" do
+      %w(today tomorrow day_after_tomorrow).each do |s|
+        ->(){ @weather.send(s.to_sym) }.
+          should_not raise_error(NoMethodError)
+      end
+    end
+
+    it "should return DayWeather object" do
+      %w(today tomorrow day_after_tomorrow).each do |s|
+        @weather.send(s.to_sym).class.
+          should == WeatherJp::Weather::DayWeather
+      end
     end
   end
 end
-
-
-
