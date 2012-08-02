@@ -43,12 +43,20 @@ module WeatherJp
           day = 0
         when :tomorrow
           day = 1
+        when :day_after_tomorrow
+          day = 2
         end
         raise ArgumentError if @day_weathers[day] == nil
         @day_weathers[day]
       rescue
         raise ArgumentError,
           "unvaild argument '#{day}' for get_weather"
+      end
+    end
+
+    %w(today tomorrow day_after_tomorrow).each do |s|
+      define_method(s.to_sym) do
+        get_weather(s)
       end
     end
 
