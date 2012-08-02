@@ -1,6 +1,8 @@
-# WeatherJp
+## About
 
-TODO: Write a gem description
+Fetch Japan weather info as Ruby object easily.
+
+http://taiki45.github.com/weather_jp
 
 ## Installation
 
