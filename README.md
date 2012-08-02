@@ -31,7 +31,7 @@ minato = WeatherJp::Weather.new("東京都港区")
 tokyo.get_weather(:today).to_s
   #=> can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"
 
-# to get weather info at 4 day later now
+# to get weather info in differrnt ways
 minato.get_weather(4) #=> <#DayWeather object>
 minato.get_weather(:today).forecast #=> can be "晴れ"
 tokyo.today
