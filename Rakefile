@@ -1,7 +1,7 @@
 #!/usr/bin/env rake
-require "bundler/gem_tasks"
 require "bundler"
-
+Bundler::GemHelper.install_tasks
+#
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -10,9 +10,8 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
-require "rspec/core"
 require "rspec/core/rake_task"
-
 RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
+task :test => :spec
