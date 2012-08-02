@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe "Weather" do
   before(:all) do
-  @weather = WeatherJP::Weather.new(:tokyo)
+    @weather = WeatherJp::Weather.new(:tokyo)
   end
 
   describe "#initialize" do
@@ -17,22 +17,22 @@ describe "Weather" do
     end
 
     it "should accept String argument" do
-      weather = WeatherJP::Weather.new "東京都府中市"
+      weather = WeatherJp::Weather.new "東京都府中市"
       weather.city_name.should == "東京都 府中市"
     end
 
     it "should accept Symbol argument" do
-      weather = WeatherJP::Weather.new :tokyo
+      weather = WeatherJp::Weather.new :tokyo
       weather.city_name.should == "東京都 東京"
     end
 
     it "should have @day_weathers as Array" do
       @weather.day_weathers.class.should == Array
     end
-     
+
     it "should have DayWeather instance in @day_weathers" do
       @weather.day_weathers.each do |w|
-        w.class.should == DayWeather
+        w.class.should == WeatherJp::Weather::DayWeather
       end
     end
 
@@ -47,7 +47,7 @@ describe "Weather" do
     end
 
     it "should raise error when invaild city name taken" do
-      ->(){ WeatherJP::Weather.new(:aaa) }.should raise_error ArgumentError
+      ->(){ WeatherJp::Weather.new(:aaa) }.should raise_error ArgumentError
     end
   end
 
@@ -85,7 +85,7 @@ describe "Weather" do
 
   describe "#each" do
     it "should yield DayWeather object" do
-      @weather.each {|w| w.class.should == DayWeather }
+      @weather.each {|w| w.class.should == WeatherJp::Weather::DayWeather }
     end
   end
 
@@ -95,7 +95,7 @@ describe "Weather" do
     end
 
     it "should yield DayWeather Object" do
-      @weather.map {|w| w.class.should == DayWeather }
+      @weather.map {|w| w.class.should == WeatherJp::Weather::DayWeather }
     end
   end
 
@@ -115,7 +115,7 @@ describe "Weather" do
     end
 
     it "should accept 0 to 4 number as argument" do
-      (0..4) do |n|
+      (0..4).each do |n|
         ->(){ @weather.get_weather(n) }.
           should_not raise_error(ArgumentError)
       end
@@ -129,7 +129,7 @@ describe "Weather" do
     end
 
     it "should return DayWeather object" do
-      @weather.get_weather(0).class.should == DayWeather
+      @weather.get_weather(0).class.should == WeatherJp::Weather::DayWeather
     end
   end
 end
