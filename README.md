@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/Taiki45/weather_jp.png?branch=master)](http://travis-ci.org/Taiki45/weather_jp)
+
 ## About
 
 Fetch Japan weather info as Ruby object easily.
