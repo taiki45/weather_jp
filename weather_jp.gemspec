@@ -4,9 +4,9 @@ require File.expand_path('../lib/weather_jp/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Taiki ONO"]
   gem.email         = ["taiks.4559@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = "Fetch Japan weather info as Ruby object easily."
+  gem.summary       = "Summary."
+  gem.homepage      = "http://taiki45.github.com/weather_jp"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
