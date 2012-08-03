@@ -2,6 +2,8 @@
 
 ## About
 
+Japan weather info API wrapper.
+
 Fetch Japan weather info as Ruby object easily.
 
 http://taiki45.github.com/weather_jp
