@@ -26,7 +26,7 @@ Or install it yourself as:
 
 ```ruby
 # creat weather object in differrnt ways
-tokyo = WeatherJP::Weather.new :tokyo
+tokyo = WeatherJp::Weather.new :tokyo
 minato = WeatherJp::Weather.new("東京都港区")
 
 # get weather info as String
