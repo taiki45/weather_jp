@@ -27,7 +27,8 @@ module WeatherJp
       def inspect
         word = "\#<DayWeather:@city_name = #{city_name}, "
         word << "@day=#{day}, @forecast=#{forecast}, "
-        word << "@max_temp=#{max_temp}, @rain=#{rain}>"
+        word << "@max_temp=#{max_temp}, @min_temp=#{min_temp}, "
+        word << "@rain=#{rain}>"
         word
       end
 
