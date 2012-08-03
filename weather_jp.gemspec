@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Taiki ONO"]
   gem.email         = ["taiks.4559@gmail.com"]
   gem.description   = "Fetch Japan weather info as Ruby object easily."
-  gem.summary       = "Summary."
+  gem.summary       = "Japan weather info to Ruby objext."
   gem.homepage      = "http://taiki45.github.com/weather_jp"
 
   gem.files         = `git ls-files`.split($\)
