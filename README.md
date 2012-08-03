@@ -5,8 +5,8 @@
 Fetch Japan weather info as Ruby object easily.
 
 http://taiki45.github.com/weather_jp
-https://rubygems.org/gems/weather_jp
 
+https://rubygems.org/gems/weather_jp
 
 ## Installation
 
@@ -55,6 +55,10 @@ minato.each {|w| p w.to_hash }
 
 ```
 
+## Requires
+
+Ruby >= 1.9.2
+
 ## Documents
 
 http://rubydoc.info/gems/weather_jp/0.0.5/frames
@@ -69,7 +73,5 @@ http://rubydoc.info/gems/weather_jp/0.0.5/frames
 
 Feel free to any requests or bug reports, issues, comments.
 
-## Requires
-
-Ruby >= 1.9.2
+Thank you :)
 
