@@ -5,6 +5,8 @@
 Fetch Japan weather info as Ruby object easily.
 
 http://taiki45.github.com/weather_jp
+https://rubygems.org/gems/weather_jp
+
 
 ## Installation
 
@@ -28,14 +30,14 @@ tokyo = WeatherJP::Weather.new :tokyo
 minato = WeatherJp::Weather.new("東京都港区")
 
 # get weather info as String
-tokyo.get_weather(:today).to_s
+tokyo.today.to_s
   #=> can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"
 
 # to get weather info in differrnt ways
 minato.get_weather(4) #=> <#DayWeather object>
-minato.get_weather(:today).forecast #=> can be "晴れ"
-tokyo.today
-minato.day_after_tomorrow
+minato.today.forecast #=> can be "晴れ"
+tokyo.get_weather(:tomorrow).rain
+minato.day_after_tomorrow.to_s
 
 # use Weather object
 tokyo.each do |w|
@@ -53,6 +55,10 @@ minato.each {|w| p w.to_hash }
 
 ```
 
+## Documents
+
+http://rubydoc.info/gems/weather_jp/0.0.5/frames
+
 ## Contributing
 
 1. Fork it
@@ -60,3 +66,10 @@ minato.each {|w| p w.to_hash }
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+Feel free to any requests or bug reports, issues, comments.
+
+## Requires
+
+Ruby >= 1.9.2
+
