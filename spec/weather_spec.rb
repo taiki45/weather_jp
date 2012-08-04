@@ -78,7 +78,7 @@ describe "Weather" do
   end
 
   describe "#to_a" do
-    it "should return and behavior sama as #to_hash" do
+    it "should return and behavior same as #to_hash" do
       @weather.to_a.should equal(@weather.to_hash)
     end
   end
