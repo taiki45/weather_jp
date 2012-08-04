@@ -16,5 +16,12 @@ describe "WeatherJp" do
         should == WeatherJp::Weather::DayWeather
     end
   end
+
+  describe ".customize_to_s" do
+    it "should customize DayWeather#to_s" do
+      WeatherJp.customize_to_s { 'success' }
+      WeatherJp.get(:tokyo, :today).to_s.should == 'success'
+    end
+  end
 end
 

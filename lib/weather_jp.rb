@@ -15,6 +15,12 @@ module WeatherJp
     end
   end
 
+  def self.customize_to_s(&code)
+    Weather::DayWeather.class_eval do
+      define_method(:to_s, &code)
+    end
+  end
+
   class Weather
     include Enumerable
 
