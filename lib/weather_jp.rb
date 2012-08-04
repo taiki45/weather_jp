@@ -7,6 +7,14 @@ require 'rss'
 require 'nokogiri'
 
 module WeatherJp
+  def self.get(city_name, option = nil)
+    if option
+      Weather.new(city_name).get_weather(option)
+    else
+      Weather.new(city_name)
+    end
+  end
+
   class Weather
     include Enumerable
 
