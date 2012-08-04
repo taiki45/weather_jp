@@ -82,7 +82,7 @@ Ruby >= 1.9.2
 
 ## Documents
 
-http://rubydoc.info/gems/weather_jp/0.0.5/frames
+http://rubydoc.info/gems/weather_jp/
 
 ## Contributing
 
