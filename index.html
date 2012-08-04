@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>weather_jp by Taiki45</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>weather_jp</h1>
+        <h2>Fetch Japan weather info as Ruby object easily.</h2>
+        <a href="https://github.com/Taiki45/weather_jp" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h2>About</h2>
+
+<p>Japan weather info API wrapper.</p>
+
+<p>Fetch Japan weather info as Ruby object easily.</p>
+
+<p><a href="http://taiki45.github.com/weather_jp">http://taiki45.github.com/weather_jp</a></p>
+
+<p><a href="https://rubygems.org/gems/weather_jp">https://rubygems.org/gems/weather_jp</a></p>
+
+<h2>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'weather_jp'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install weather_jp
+</code></pre>
+
+<h2>Usage</h2>
+
+<div class="highlight"><pre><span class="c1"># creat weather object in differrnt ways</span>
+<span class="n">tokyo</span> <span class="o">=</span> <span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span> <span class="ss">:today</span>
+<span class="n">tokyo</span> <span class="o">=</span> <span class="no">WeatherJp</span><span class="o">::</span><span class="no">Weather</span><span class="o">.</span><span class="n">new</span> <span class="ss">:tokyo</span>
+<span class="n">minato</span> <span class="o">=</span> <span class="no">WeatherJp</span><span class="o">::</span><span class="no">Weather</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"東京都港区"</span><span class="p">)</span>
+
+<span class="c1"># get weather info as String</span>
+<span class="n">tokyo</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="c1">#=&gt; can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"</span>
+
+<span class="c1"># to get weather info in differrnt ways</span>
+<span class="n">minato</span><span class="o">.</span><span class="n">get_weather</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; &lt;#DayWeather object&gt;</span>
+<span class="n">minato</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">forecast</span> <span class="c1">#=&gt; can be "晴れ"</span>
+<span class="n">tokyo</span><span class="o">.</span><span class="n">get_weather</span><span class="p">(</span><span class="ss">:tomorrow</span><span class="p">)</span><span class="o">.</span><span class="n">rain</span>
+<span class="n">minato</span><span class="o">.</span><span class="n">day_after_tomorrow</span><span class="o">.</span><span class="n">to_s</span>
+<span class="no">Weather</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">,</span> <span class="ss">:today</span><span class="p">)</span><span class="o">.</span><span class="n">forecast</span>
+
+<span class="c1"># use Weather object</span>
+<span class="n">tokyo</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">city_name</span>
+  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">day</span>
+  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">forecast</span>
+  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">max_temp</span>
+  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">min_temp</span>
+  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">rain</span>
+  <span class="n">w</span><span class="o">.</span><span class="n">each_pair</span> <span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">minato</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span><span class="o">|</span><span class="n">w</span><span class="o">|</span> <span class="o">[</span><span class="n">w</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">forecast</span><span class="o">]</span> <span class="p">}</span>
+
+<span class="c1"># or use as simple Array or Hash</span>
+<span class="n">tokyo</span><span class="o">.</span><span class="n">to_a</span>
+<span class="n">minato</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">w</span><span class="o">|</span> <span class="nb">p</span> <span class="n">w</span><span class="o">.</span><span class="n">to_hash</span> <span class="p">}</span>
+
+<span class="c1"># you can cutomize DayWeather#to_s method</span>
+<span class="no">Weather</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "東京 東京都の天気は晴れ....etc"</span>
+
+<span class="no">Weather</span><span class="o">.</span><span class="n">customize_to_s</span> <span class="k">do</span>
+  <span class="n">word</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">day</span><span class="si">}</span><span class="s2">の</span><span class="si">#{</span><span class="n">city_name</span><span class="si">}</span><span class="s2">は</span><span class="si">#{</span><span class="n">forecast</span><span class="si">}</span><span class="s2"> "</span>
+  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"最高気温は</span><span class="si">#{</span><span class="n">max_temp</span><span class="si">}</span><span class="s2"> "</span> <span class="k">if</span> <span class="n">max_temp</span>
+  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"最低気温は</span><span class="si">#{</span><span class="n">min_temp</span><span class="si">}</span><span class="s2"> "</span> <span class="k">if</span> <span class="n">min_temp</span>
+  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"降水確率は</span><span class="si">#{</span><span class="n">rain</span><span class="si">}</span><span class="s2">%"</span> <span class="k">if</span> <span class="n">rain</span>
+  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"でし"</span>
+  <span class="n">word</span>
+<span class="k">end</span>
+
+<span class="no">Weather</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "本日の東京 東京都は晴れ...."</span>
+</pre></div>
+
+<h2>Requires</h2>
+
+<p>Ruby &gt;= 1.9.2</p>
+
+<h2>Documents</h2>
+
+<p><a href="http://rubydoc.info/gems/weather_jp/">http://rubydoc.info/gems/weather_jp/</a></p>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol><p>Feel free to any requests or bug reports, issues, comments.</p>
+
+<p>Thank you :)</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/Taiki45/weather_jp/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Taiki45/weather_jp/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/Taiki45/weather_jp"></a> is maintained by <a href="https://github.com/Taiki45">Taiki45</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
