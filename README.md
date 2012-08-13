@@ -61,9 +61,9 @@ tokyo.to_a
 minato.each {|w| p w.to_hash }
 
 # you can cutomize DayWeather#to_s method
-Weather.get(:tokyo).today.to_s #=> "東京 東京都の天気は晴れ....etc"
+WeatherJp.get(:tokyo).today.to_s #=> "東京 東京都の天気は晴れ....etc"
 
-Weather.customize_to_s do
+WeatherJp.customize_to_s do
   word = "#{day}の#{city_name}は#{forecast} "
   word << "最高気温は#{max_temp} " if max_temp
   word << "最低気温は#{min_temp} " if min_temp
@@ -72,7 +72,7 @@ Weather.customize_to_s do
   word
 end
 
-Weather.get(:tokyo).today.to_s #=> "本日の東京 東京都は晴れ...."
+WeatherJp.get(:tokyo).today.to_s #=> "本日の東京 東京都は晴れ...."
 
 ```
 
