@@ -28,8 +28,8 @@ Or install it yourself as:
 
 ```ruby
 # creat weather object in differrnt ways
-tokyo = WeatherJp.get :today
-tokyo = WeatherJp::Weather.new :tokyo
+tokyo = WeatherJp.get :tokyo
+tokyo = WeatherJp.get "東京都府中市"
 minato = WeatherJp::Weather.new("東京都港区")
 
 # get weather info as String
