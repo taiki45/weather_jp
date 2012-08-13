@@ -71,7 +71,7 @@
 <span class="n">minato</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">forecast</span> <span class="c1">#=&gt; can be "晴れ"</span>
 <span class="n">tokyo</span><span class="o">.</span><span class="n">get_weather</span><span class="p">(</span><span class="ss">:tomorrow</span><span class="p">)</span><span class="o">.</span><span class="n">rain</span>
 <span class="n">minato</span><span class="o">.</span><span class="n">day_after_tomorrow</span><span class="o">.</span><span class="n">to_s</span>
-<span class="no">Weather</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">,</span> <span class="ss">:today</span><span class="p">)</span><span class="o">.</span><span class="n">forecast</span>
+<span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">,</span> <span class="ss">:today</span><span class="p">)</span><span class="o">.</span><span class="n">forecast</span>
 
 <span class="c1"># use Weather object</span>
 <span class="n">tokyo</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
@@ -91,9 +91,9 @@
 <span class="n">minato</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">w</span><span class="o">|</span> <span class="nb">p</span> <span class="n">w</span><span class="o">.</span><span class="n">to_hash</span> <span class="p">}</span>
 
 <span class="c1"># you can cutomize DayWeather#to_s method</span>
-<span class="no">Weather</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "東京 東京都の天気は晴れ....etc"</span>
+<span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "東京 東京都の天気は晴れ....etc"</span>
 
-<span class="no">Weather</span><span class="o">.</span><span class="n">customize_to_s</span> <span class="k">do</span>
+<span class="no">WeatherJp</span><span class="o">.</span><span class="n">customize_to_s</span> <span class="k">do</span>
   <span class="n">word</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">day</span><span class="si">}</span><span class="s2">の</span><span class="si">#{</span><span class="n">city_name</span><span class="si">}</span><span class="s2">は</span><span class="si">#{</span><span class="n">forecast</span><span class="si">}</span><span class="s2"> "</span>
   <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"最高気温は</span><span class="si">#{</span><span class="n">max_temp</span><span class="si">}</span><span class="s2"> "</span> <span class="k">if</span> <span class="n">max_temp</span>
   <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"最低気温は</span><span class="si">#{</span><span class="n">min_temp</span><span class="si">}</span><span class="s2"> "</span> <span class="k">if</span> <span class="n">min_temp</span>
@@ -102,7 +102,7 @@
   <span class="n">word</span>
 <span class="k">end</span>
 
-<span class="no">Weather</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "本日の東京 東京都は晴れ...."</span>
+<span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "本日の東京 東京都は晴れ...."</span>
 </pre></div>
 
 <h2>Requires</h2>
