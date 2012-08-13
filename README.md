@@ -41,7 +41,7 @@ minato.get_weather(4) #=> <#DayWeather object>
 minato.today.forecast #=> can be "晴れ"
 tokyo.get_weather(:tomorrow).rain
 minato.day_after_tomorrow.to_s
-Weather.get(:tokyo, :today).forecast
+WeatherJp.get(:tokyo, :today).forecast
 
 # use Weather object
 tokyo.each do |w|
