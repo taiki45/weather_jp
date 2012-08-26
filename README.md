@@ -10,6 +10,10 @@ http://taiki45.github.com/weather_jp
 
 https://rubygems.org/gems/weather_jp
 
+## Author
+
+[@taiki45](https://twitter.com/taiki45)
+
 ## Installation
 
 Add this line to your application's Gemfile:
