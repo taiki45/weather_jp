@@ -2,49 +2,49 @@
 
 ## About
 
-Japan weather info API wrapper.
+天気予報サービス API ラッパーです。
 
-Fetch Japan weather info as Ruby object easily.
+天気予報を簡単に Ruby オブジェクトにします。
 
 http://taiki45.github.com/weather_jp
 
 https://rubygems.org/gems/weather_jp
 
-## Installation
+## インストール
 
-Add this line to your application's Gemfile:
+この一行をあなたのアプリケーションの Gemfile に追記して下さい:
 
     gem 'weather_jp'
 
-And then execute:
+そしてこう実行します:
 
     $ bundle
 
-Or install it yourself as:
+または gem コマンドを使ってインストールします:
 
     $ gem install weather_jp
 
-## Usage
+## 使い方
 
 ```ruby
-# creat weather object in differrnt ways
+# 全体の天気予報を扱うオブジェクトを作るいくつかの方法
 tokyo = WeatherJp.get :tokyo
 akiba = WeatherJp.get "秋葉原"
 abuja = WeatherJp::Weather.new("アブジャ")
 tsuyama = WeatherJp.get "津山"
 
-# get weather info as String
+# 天気予報を文字列として取得
 tokyo.today.to_s
-  #=> can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"
+  #=> これは "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc" になります
 
-# to get weather info in differrnt ways
+# Weather オブジェクトを取得するいくつかの方法
 akiba.get_weather(4) #=> <#DayWeather object>
 tokyo.today.forecast #=> can be "晴れ"
 tokyo.get_weather(:tomorrow).rain
 akiba.day_after_tomorrow.to_s
 WeatherJp.get(:tokyo, :today).forecast
 
-# use Weather object
+# Weather オブジェクトを使ってみる
 tokyo.each do |w|
   puts w.city_name
   puts w.day
@@ -57,12 +57,12 @@ end
 
 akiba.map {|w| [w.day, w.forecast] }
 
-# or use as simple Array or Hash
+# もしくは単純な Array や Hash として扱う方法
 tokyo.to_a
 tsuyama.each {|w| p w.to_hash }
 akiba.day_weathers
 
-# you can cutomize DayWeather#to_s method
+# DayWeather#to_s メソッドをカスタマイズすることもできます
 WeatherJp.get(:tokyo).today.to_s #=> "東京 東京都の天気は晴れ....etc"
 
 WeatherJp.customize_to_s do
@@ -78,26 +78,26 @@ WeatherJp.get(:tokyo).today.to_s #=> "本日の東京 東京都は晴れ...."
 
 ```
 
-## Requires
+## 必要な環境
 
 Ruby >= 1.9.2
 
-## Documents
+## ドキュメント
 
 http://rubydoc.info/gems/weather_jp/
 
-## Author
+## 作者
 
 [@taiki45](https://twitter.com/taiki45)
 
-## Contributing
+## 貢献方法
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+1. Fork してください
+2. あなたの機能を盛り込んだブランチを作って下さい (`git checkout -b my-new-feature`)
+3. コミットしてください (`git commit -am 'Added some feature'`)
+4. あなたの変更をプッシュしてください (`git push origin my-new-feature`)
+5. Pull Request を作ってください
 
-Feel free to any requests or bug reports, issues, comments.
+どんな要望やバグ報告、イッシュー、コメントも歓迎します
 
 Thank you :)
