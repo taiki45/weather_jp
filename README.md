@@ -10,10 +10,6 @@ http://taiki45.github.com/weather_jp
 
 https://rubygems.org/gems/weather_jp
 
-## Author
-
-[@taiki45](https://twitter.com/taiki45)
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -33,18 +29,19 @@ Or install it yourself as:
 ```ruby
 # creat weather object in differrnt ways
 tokyo = WeatherJp.get :tokyo
-tokyo = WeatherJp.get "東京都府中市"
-minato = WeatherJp::Weather.new("東京都港区")
+akiba = WeatherJp.get "秋葉原"
+abuja = WeatherJp::Weather.new("アブジャ")
+tsuyama = WeatherJp.get "津山"
 
 # get weather info as String
 tokyo.today.to_s
   #=> can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"
 
 # to get weather info in differrnt ways
-minato.get_weather(4) #=> <#DayWeather object>
-minato.today.forecast #=> can be "晴れ"
+akiba.get_weather(4) #=> <#DayWeather object>
+tokyo.today.forecast #=> can be "晴れ"
 tokyo.get_weather(:tomorrow).rain
-minato.day_after_tomorrow.to_s
+akiba.day_after_tomorrow.to_s
 WeatherJp.get(:tokyo, :today).forecast
 
 # use Weather object
@@ -58,11 +55,12 @@ tokyo.each do |w|
   w.each_pair {|k,v| puts k, v }
 end
 
-minato.map {|w| [w.day, w.forecast] }
+akiba.map {|w| [w.day, w.forecast] }
 
 # or use as simple Array or Hash
 tokyo.to_a
-minato.each {|w| p w.to_hash }
+tsuyama.each {|w| p w.to_hash }
+akiba.day_weathers
 
 # you can cutomize DayWeather#to_s method
 WeatherJp.get(:tokyo).today.to_s #=> "東京 東京都の天気は晴れ....etc"
@@ -88,6 +86,10 @@ Ruby >= 1.9.2
 
 http://rubydoc.info/gems/weather_jp/
 
+## Author
+
+[@taiki45](https://twitter.com/taiki45)
+
 ## Contributing
 
 1. Fork it
@@ -99,4 +101,3 @@ http://rubydoc.info/gems/weather_jp/
 Feel free to any requests or bug reports, issues, comments.
 
 Thank you :)
-
