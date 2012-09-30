@@ -22,8 +22,6 @@ describe "DayWeather" do
     it "should return String" do
       @weather.inspect.class.should == String
     end
-
-    it "should have certain format"
   end
 
   describe "#to_s" do
@@ -31,7 +29,9 @@ describe "DayWeather" do
       @weather.to_s.class.should == String
     end
 
-    it "should be certain string when certain environment"
+    it "should be certain string format" do
+      @weather.to_s.should =~ /東京都\s東京の今日の天気は.*\sです。/u
+    end
   end
 
   describe "#to_hash" do
@@ -45,8 +45,6 @@ describe "DayWeather" do
       @weather.to_hash.should have_key(:max_temp)
       @weather.to_hash.should have_key(:rain)
     end
-
-    it "should have certain value when certain env"
   end
 
   describe "#each" do
