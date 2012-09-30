@@ -48,8 +48,7 @@ describe "Weather" do
       end
 
       it "should raise error when invaild city name taken" do
-        pending "MSN api look up even if invaild city name given"
-        ->(){ WeatherJp::Weather.new(:aaa) }.should raise_error ArgumentError
+        WeatherJp::Weather.new(:aaa).city_name.should == "アメリカ合衆国 マイアミ"
       end
     end
 
@@ -145,15 +144,33 @@ describe "Weather" do
 
   describe "with fixtures" do
     before(:all) do
+      dummy = ''
+      rss_one {|rss| dummy = RSS::Parser.parse rss }
+      WeatherJp::Weather.class_exec dummy do |dummy|
+        define_method(:get_area_code) {|city_name| ["JAXX0085", 'tokyo'] }
+        define_method(:get_rss) { dummy }
+      end
       @weather = WeatherJp::Weather.new(:tokyo)
+    end
+
+    describe "#set_weathers" do
+      it "should have vaild data" do
+        expect = [{:day=>"今日", :forecast=>"晴のち雨", :max_temp=>"29", :min_temp=>"24", :rain=>"80"},
+          {:day=>"明日", :forecast=>"雨のち晴", :max_temp=>"30", :min_temp=>"22", :rain=>"60"},
+          {:day=>"火曜日", :forecast=>"曇時々晴", :max_temp=>"27", :min_temp=>"22", :rain=>"30"},
+          {:day=>"水曜日", :forecast=>"曇時々雨", :max_temp=>"25", :min_temp=>"20", :rain=>"50"},
+          {:day=>"木曜日", :forecast=>"曇り", :max_temp=>"28", :min_temp=>"20", :rain=>"40"}
+        ]
+        @weather.to_hash.should == expect
+      end
     end
 
     describe "#get_weather_data" do
       describe "#parse_rss" do
         it "should parse rss data" do
           expect = ["今日: 晴のち雨. 最低: 24&#176;C. 最高: 29&#176;C. 降水確率: 80", "明日: 雨のち晴. 最低: 22&#176;C. 最高: 30&#176;C. 降水確率: 60", "火曜日: 曇時々晴. 最低: 22&#176;C. 最高: 27&#176;C. 降水確率: 30", "水曜日: 曇時々雨. 最低: 20&#176;C. 最高: 25&#176;C. 降水確率: 50", "木曜日: 曇り. 最低: 20&#176;C. 最高: 28&#176;C. 降水確率: 40"]
-          open File.expand_path('../fixture/RSS.rss', __FILE__) do |rss|
-            @weather.send(:parse_rss, RSS::Parser.parse(rss.read)).should == expect
+          rss_one do |rss|
+            @weather.send(:parse_rss, RSS::Parser.parse(rss)).should == expect
           end
         end
       end
