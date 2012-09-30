@@ -114,20 +114,27 @@ module WeatherJp
 
 
     def get_weather_data
+      parse_rss(get_rss)
+    end
+
+    def get_rss
       begin
         uri = URI.parse(
           "http://weather.jp.msn.com/" + \
           "RSS.aspx?wealocations=wc:#{@area_code}&" + \
           "weadegreetype=C&culture=ja-JP")
-          rss = RSS::Parser.parse(uri, false)
-          str = rss.channel.item(0).description
-          data = remove_html_tag(str).split(/%/)
-          data.pop
-          data.map {|i| i.delete!('"') }
+          RSS::Parser.parse(uri, false)
       rescue
         raise StandardError,
           "the MSN weather sever may be downed, or got invaild city code"
       end
+    end
+
+    def parse_rss(rss)
+      str = rss.channel.item(0).description
+      data = remove_html_tag(str).split(/%/)
+      data.pop
+      data.map {|i| i.delete!('"') }
     end
 
     def remove_html_tag(string)
