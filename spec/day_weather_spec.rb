@@ -28,10 +28,6 @@ describe "DayWeather" do
     it "should return String" do
       @weather.to_s.class.should == String
     end
-
-    it "should be certain string format" do
-      @weather.to_s.should =~ /東京都\s東京の今日の天気は.*\sです。/u
-    end
   end
 
   describe "#to_hash" do
