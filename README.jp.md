@@ -37,6 +37,11 @@ tsuyama = WeatherJp.get "津山"
 tokyo.today.to_s
   #=> これは "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc" になります
 
+# もしくは解析したい文字列があるなら
+
+WeatherJp.parse("今日のうどん県の天気教えて下され〜〜").to_s
+  #=> "香川県 高松の今日の天気は曇のち晴れ 最高気温25度 最低気温17度 降水確率は20% です。"
+
 # Weather オブジェクトを取得するいくつかの方法
 akiba.get_weather(4) #=> <#DayWeather object>
 tokyo.today.forecast #=> can be "晴れ"
