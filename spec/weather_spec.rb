@@ -143,10 +143,12 @@ describe "Weather" do
   end
 
   describe "with fixtures" do
-    before(:all) do
+    before :all do
       dummy = ''
       rss_one {|rss| dummy = RSS::Parser.parse rss }
       WeatherJp::Weather.class_exec dummy do |dummy|
+        alias :back_code :get_area_code
+        alias :back_rss :get_rss
         define_method(:get_area_code) {|city_name| ["JAXX0085", 'tokyo'] }
         define_method(:get_rss) { dummy }
       end
@@ -180,6 +182,13 @@ describe "Weather" do
           data = %q(<html>a<a href="dummy">b</a><span>c</sapan></html>)
           @weather.send(:remove_html_tag, data).should == %(""a""b""""c"""")
         end
+      end
+    end
+
+    after :all do
+      WeatherJp::Weather.class_exec do
+        alias :get_area_code :back_code
+        alias :get_rss :back_rss
       end
     end
   end
