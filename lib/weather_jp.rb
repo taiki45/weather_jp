@@ -7,7 +7,6 @@ require 'rss'
 require 'nokogiri'
 
 module WeatherJp
-
   class << self
     def get(city_name, option = nil)
       if option
@@ -63,9 +62,7 @@ module WeatherJp
     include Enumerable
 
     def initialize(city_name)
-      city_name = city_name.to_s if city_name.class == Symbol
-      @area_code, @city_name = get_area_code(city_name)
-      @weathers = set_weathers
+      @area_code, @city_name, @weathers = Wrapper.get(city_name)
       @day_weathers = Array.new(@weathers.size) do |n| 
         DayWeather.new(@weathers,@city_name, n)
       end
@@ -73,7 +70,6 @@ module WeatherJp
 
     attr_reader :city_name, :area_code, :day_weathers
 
-    public
     def to_hash
       @weathers
     end
@@ -111,35 +107,36 @@ module WeatherJp
         get_weather(s)
       end
     end
+  end
 
-    private
-    def set_weathers
-      begin
-        weathers = Array.new
-        get_weather_data.each do |i|
-          h = Hash.new
-          h[:day] = i.slice(/(.*?):\s+(.*?)\./, 1)
-          h[:forecast] = i.slice(/(.*?):\s+(.*?)\./, 2)
-          h[:max_temp] = i.slice(/(最高).*?(\d+)/u, 2)
-          h[:min_temp] = i.slice(/(最低).*?(\d+)/u, 2)
-          h[:rain] = i.slice(/(降水確率).*?(\d+)/u, 2)
-          weathers << h
-        end
-        weathers
-      rescue
-        raise StandardError,
-          "the MSN weather sever may be downed, or something wrong"
+  module Wrapper
+    class << self
+      def get(city_name)
+        area_code, city_name = get_area_code(city_name.to_s)
+        weathers = set_weathers(parse_rss(get_rss(area_code)))
+        [area_code, city_name, weathers]
       end
-    end
 
-    def get_area_code(city_name)
-      uri = URI.encode(
-        "http://weather.service.msn.com/" + \
-        "find.aspx?outputview=search&weadegreetype=C&culture=ja-JP&" + \
-        "weasearchstr=#{city_name}")
-        doc = Nokogiri::XML(open(uri))
+      def get_area_code(city_name)
+        get_xml city_name do |xml|
+          parse_xml xml
+        end
+      end
+
+      def get_xml(city_name)
+        result = []
+        open(URI.encode("http://weather.service.msn.com/" +
+          "find.aspx?outputview=search&weadegreetype=C&culture=ja-JP&" +
+          "weasearchstr=#{city_name}")) do |xml|
+          result = yield xml
+        end
+        result
+      end
+
+      def parse_xml(xml)
+        doc = Nokogiri::XML(xml)
         begin 
-          code = 
+          code =
             doc.xpath('//weather').attr('weatherlocationcode').value
           full_name = 
             doc.xpath('//weather').attr('weatherlocationname').value
@@ -148,36 +145,51 @@ module WeatherJp
             "invaild city name '#{city_name}'!"
         end
         [code.slice(3..-1), full_name]
-    end
-
-
-    def get_weather_data
-      parse_rss(get_rss)
-    end
-
-    def get_rss
-      begin
-        uri = URI.parse(
-          "http://weather.jp.msn.com/" + \
-          "RSS.aspx?wealocations=wc:#{@area_code}&" + \
-          "weadegreetype=C&culture=ja-JP")
-          RSS::Parser.parse(uri, false)
-      rescue
-        raise StandardError,
-          "the MSN weather sever may be downed, or got invaild city code"
       end
-    end
 
-    def parse_rss(rss)
-      str = rss.channel.item(0).description
-      data = remove_html_tag(str).split(/%/)
-      data.pop
-      data.map {|i| i.delete!('"') }
-    end
+      def get_rss(area_code)
+        begin
+          uri = URI.parse(
+            "http://weather.jp.msn.com/" +
+            "RSS.aspx?wealocations=wc:#{area_code}&" +
+            "weadegreetype=C&culture=ja-JP"
+          )
+          RSS::Parser.parse(uri, false)
+        rescue
+          raise StandardError,
+            "the MSN weather sever may be downed, or got invaild city code"
+        end
+      end
 
-    def remove_html_tag(string)
-      string.gsub!(/<(\"[^\"]*\"|'[^']*'|[^'\">])*>/,'""')
+      def parse_rss(rss)
+        str = rss.channel.item(0).description
+        data = remove_html_tag(str).split(/%/)
+        data.pop
+        data.map {|i| i.delete!('"') }
+      end
+
+      def remove_html_tag(str)
+        str.gsub(/<(\"[^\"]*\"|'[^']*'|[^'\">])*>/,'""')
+      end
+
+      def set_weathers(raw_data)
+        weathers = Array.new
+        begin
+          raw_data.each do |i|
+            h = Hash.new
+            h[:day] = i.slice(/(.*?):\s+(.*?)\./, 1)
+            h[:forecast] = i.slice(/(.*?):\s+(.*?)\./, 2)
+            h[:max_temp] = i.slice(/(最高).*?(\d+)/u, 2)
+            h[:min_temp] = i.slice(/(最低).*?(\d+)/u, 2)
+            h[:rain] = i.slice(/(降水確率).*?(\d+)/u, 2)
+            weathers << h
+          end
+          weathers
+        rescue
+          raise StandardError,
+            "the MSN weather sever may be downed, or something wrong"
+        end
+      end
     end
   end
 end
-
