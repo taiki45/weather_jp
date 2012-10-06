@@ -27,16 +27,6 @@ describe "DayWeather" do
     end
   end
 
-  describe "#to_s" do
-    it "should return String" do
-      @weather.to_s.class.should == String
-    end
-
-    it "should have certain format" do
-      @weather.to_s.should == "tokyoの今日の天気は晴のち雨 最高気温29度 最低気温24度 降水確率は80% です。"
-    end
-  end
-
   describe "#to_hash" do
     it "should return Hash" do
       @weather.to_hash.class.should == Hash
