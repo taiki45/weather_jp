@@ -2,14 +2,13 @@
 require 'spec_helper'
 
 describe "DayWeather" do
-  before(:all) do
-    @tokyo = WeatherJp::Weather.new(:tokyo)
-    @weather = @tokyo.get_weather(:today)
+  before :all do
+    @weather = WeatherJp.get(:tokyo, :today)
   end
 
   describe "#initialize" do
     it "should have @city_name" do
-      @weather.city_name.should == "東京都 東京"
+      @weather.city_name.should == "tokyo"
     end
 
     it "should have @weather as Hash" do
@@ -22,11 +21,19 @@ describe "DayWeather" do
     it "should return String" do
       @weather.inspect.class.should == String
     end
+
+    it "should have certain format" do
+      @weather.inspect.should == "#<DayWeather:@city_name = tokyo, @day=今日, @forecast=晴のち雨, @max_temp=29, @min_temp=24, @rain=80>"
+    end
   end
 
   describe "#to_s" do
     it "should return String" do
       @weather.to_s.class.should == String
+    end
+
+    it "should have certain format" do
+      @weather.to_s.should == "tokyoの今日の天気は晴のち雨 最高気温29度 最低気温24度 降水確率は80% です。"
     end
   end
 
@@ -69,3 +76,4 @@ describe "DayWeather" do
     end
   end
 end
+

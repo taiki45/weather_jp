@@ -13,18 +13,9 @@ describe "Weather" do
         @weather.area_code.should == "JAXX0085"
       end
 
-      it "should have @city_name and can access" do
-        @weather.city_name.should == "東京都 東京"
-      end
-
-      it "should accept String argument" do
-        weather = WeatherJp::Weather.new "東京都府中市"
-        weather.city_name.should == "東京都 府中市"
-      end
-
       it "should accept Symbol argument" do
         weather = WeatherJp::Weather.new :tokyo
-        weather.city_name.should == "東京都 東京"
+        weather.city_name.should == "tokyo"
       end
 
       it "should have @day_weathers as Array" do
@@ -39,16 +30,6 @@ describe "Weather" do
 
       it "should have 5 DayWeather instance in @day_weathers" do
         @weather.day_weathers.size.should == 5
-      end
-    end
-
-    describe "#get_area_code" do
-      it "should get vaild area code" do
-        @weather.area_code.should == "JAXX0085"
-      end
-
-      it "should raise error when invaild city name taken" do
-        WeatherJp::Weather.new(:aaa).city_name.should == "アメリカ合衆国 マイアミ"
       end
     end
 
@@ -138,57 +119,6 @@ describe "Weather" do
           @weather.send(s.to_sym).class.
             should == WeatherJp::Weather::DayWeather
         end
-      end
-    end
-  end
-
-  describe "with fixtures" do
-    before :all do
-      dummy = ''
-      rss_one {|rss| dummy = RSS::Parser.parse rss }
-      WeatherJp::Weather.class_exec dummy do |dummy|
-        alias :back_code :get_area_code
-        alias :back_rss :get_rss
-        define_method(:get_area_code) {|city_name| ["JAXX0085", 'tokyo'] }
-        define_method(:get_rss) { dummy }
-      end
-      @weather = WeatherJp::Weather.new(:tokyo)
-    end
-
-    describe "#set_weathers" do
-      it "should have vaild data" do
-        expect = [{:day=>"今日", :forecast=>"晴のち雨", :max_temp=>"29", :min_temp=>"24", :rain=>"80"},
-          {:day=>"明日", :forecast=>"雨のち晴", :max_temp=>"30", :min_temp=>"22", :rain=>"60"},
-          {:day=>"火曜日", :forecast=>"曇時々晴", :max_temp=>"27", :min_temp=>"22", :rain=>"30"},
-          {:day=>"水曜日", :forecast=>"曇時々雨", :max_temp=>"25", :min_temp=>"20", :rain=>"50"},
-          {:day=>"木曜日", :forecast=>"曇り", :max_temp=>"28", :min_temp=>"20", :rain=>"40"}
-        ]
-        @weather.to_hash.should == expect
-      end
-    end
-
-    describe "#get_weather_data" do
-      describe "#parse_rss" do
-        it "should parse rss data" do
-          expect = ["今日: 晴のち雨. 最低: 24&#176;C. 最高: 29&#176;C. 降水確率: 80", "明日: 雨のち晴. 最低: 22&#176;C. 最高: 30&#176;C. 降水確率: 60", "火曜日: 曇時々晴. 最低: 22&#176;C. 最高: 27&#176;C. 降水確率: 30", "水曜日: 曇時々雨. 最低: 20&#176;C. 最高: 25&#176;C. 降水確率: 50", "木曜日: 曇り. 最低: 20&#176;C. 最高: 28&#176;C. 降水確率: 40"]
-          rss_one do |rss|
-            @weather.send(:parse_rss, RSS::Parser.parse(rss)).should == expect
-          end
-        end
-      end
-
-      describe "#remove_html_tag" do
-        it "should remove html tags" do
-          data = %q(<html>a<a href="dummy">b</a><span>c</sapan></html>)
-          @weather.send(:remove_html_tag, data).should == %(""a""b""""c"""")
-        end
-      end
-    end
-
-    after :all do
-      WeatherJp::Weather.class_exec do
-        alias :get_area_code :back_code
-        alias :get_rss :back_rss
       end
     end
   end
