@@ -2,7 +2,6 @@
 $LOAD_PATH.unshift File.expand_path("../", __FILE__)
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 
-require 'rubygems'
 require 'nokogiri'
 require 'weather_jp'
 
@@ -30,3 +29,10 @@ def get_dummy_rss
   rss
 end
 
+def get_ny_rss
+  rss = ''
+  open fixture_path + '/ny.rss' do |file|
+    rss = RSS::Parser.parse file.read
+  end
+  rss
+end
