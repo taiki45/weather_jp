@@ -182,6 +182,9 @@ module WeatherJp
             h[:max_temp] = i.slice(/(最高).*?(\d+)/u, 2)
             h[:min_temp] = i.slice(/(最低).*?(\d+)/u, 2)
             h[:rain] = i.slice(/(降水確率).*?(\d+)/u, 2)
+            if h[:day].match /の天気/u
+              h[:day] = h[:day].slice /(.*)の天気/u, 1
+            end
             weathers << h
           end
           weathers
