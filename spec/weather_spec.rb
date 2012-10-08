@@ -74,30 +74,30 @@ describe "Weather" do
     describe "#get_weather" do
       it "should accept Symbol argument" do
         ->(){ @weather.get_weather(:today) }.
-          should_not raise_error(ArgumentError)
+          should_not raise_error(WeatherJp::WeatherJpError)
         ->(){ @weather.get_weather(:tomorrow) }.
-          should_not raise_error(ArgumentError)
+          should_not raise_error(WeatherJp::WeatherJpError)
       end
 
       it "should accept String argument" do
         ->(){ @weather.get_weather('today') }.
-          should_not raise_error(ArgumentError)
+          should_not raise_error(WeatherJp::WeatherJpError)
         ->(){ @weather.get_weather('tomorrow') }.
-          should_not raise_error(ArgumentError)
+          should_not raise_error(WeatherJp::WeatherJpError)
       end
 
       it "should accept 0 to 4 number as argument" do
         (0..4).each do |n|
           ->(){ @weather.get_weather(n) }.
-            should_not raise_error(ArgumentError)
+            should_not raise_error(WeatherJp::WeatherJpError)
         end
       end
 
-      it "should raise ArgumentError when got invaild aregument" do
+      it "should raise WeatherJp::WeatherJpError when got invaild aregument" do
         ->(){ @weather.get_weather(:yesterday) }.
-          should raise_error(ArgumentError)
+          should raise_error(WeatherJp::WeatherJpError)
         ->(){ @weather.get_weather(5) }.
-          should raise_error(ArgumentError)
+          should raise_error(WeatherJp::WeatherJpError)
       end
 
       it "should return DayWeather object" do

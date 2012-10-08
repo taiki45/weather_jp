@@ -7,6 +7,8 @@ require 'rss'
 require 'nokogiri'
 
 module WeatherJp
+  class WeatherJpError < StandardError; end
+
   class << self
     def get(city_name, option = nil)
       if option
@@ -30,15 +32,15 @@ module WeatherJp
 
     def parser(str)
       if str =~ /((?<city>.*)の
-          (?<day>今日|きょう|明日|あした|明後日|あさって|３日後|４日後|3日後|4日後)
+          (?<day>今日|きょう|今|いま|明日|あした|明後日|あさって|３日後|４日後|3日後|4日後)
           の(天気|てんき).*) |
-          ((?<day>今日|きょう|明日|あした|明後日|あさって|３日後|４日後|3日後|4日後)の
+          ((?<day>今日|きょう|今|いま|明日|あした|明後日|あさって|３日後|４日後|3日後|4日後)の
           (?<city>.*)の(天気|てんき))
       /ux
         data = Regexp.last_match
         day = data[:day]
         case day
-        when /今日|きょう/u
+        when /今日|きょう|今|いま/u
           day = 'today'
         when /明日|あした/u
           day = 'tomorrow'
@@ -49,7 +51,7 @@ module WeatherJp
         when /4日後|４日後/u
           day = 4
         else
-          raise "No matched"
+          raise WeatherJpError, "Can't parse given String"
         end
         {day: day, city: data[:city]}
       else
@@ -94,10 +96,10 @@ module WeatherJp
         when :day_after_tomorrow
           day = 2
         end
-        raise ArgumentError if @day_weathers[day] == nil
+        raise WeatherJpError if @day_weathers[day] == nil
         @day_weathers[day]
       rescue
-        raise ArgumentError,
+        raise WeatherJpError,
           "unvaild argument '#{day}' for get_weather"
       end
     end
@@ -141,8 +143,7 @@ module WeatherJp
           full_name = 
             doc.xpath('//weather').attr('weatherlocationname').value
         rescue
-          raise ArgumentError,
-            "invaild city name '#{city_name}'!"
+          raise WeatherJpError, "Cant't parse XML"
         end
         [code.slice(3..-1), full_name]
       end
@@ -156,7 +157,7 @@ module WeatherJp
           )
           RSS::Parser.parse(uri, false)
         rescue
-          raise StandardError,
+          raise WeatherJpError,
             "the MSN weather sever may be downed, or got invaild city code"
         end
       end
@@ -188,8 +189,8 @@ module WeatherJp
             weathers << h
           end
           weathers
-        rescue
-          raise StandardError,
+        rescue NameError
+          raise WeatherJpError,
             "the MSN weather sever may be downed, or something wrong"
         end
       end
