@@ -183,6 +183,9 @@ module WeatherJp
             h[:max_temp] = i.slice(/(最高).*?(\d+)/u, 2)
             h[:min_temp] = i.slice(/(最低).*?(\d+)/u, 2)
             h[:rain] = i.slice(/(降水確率).*?(\d+)/u, 2)
+            [:max_temp, :min_temp, :rain].each do |j|
+              h[j] = h[j].to_i unless h[j] == nil
+            end
             if h[:day].match /の天気/u
               h[:day] = h[:day].slice /(.*)の天気/u, 1
             end
