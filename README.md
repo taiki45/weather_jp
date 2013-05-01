@@ -1,7 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/taiki45/weather_jp.png)](http://travis-ci.org/taiki45/weather_jp)
-
-## About
-
+# weather_jp [![Build Status](https://secure.travis-ci.org/taiki45/weather_jp.png)](http://travis-ci.org/taiki45/weather_jp)
 Japan weather info API wrapper.
 
 Fetch Japan weather info as Ruby object easily.
@@ -18,7 +15,7 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -92,7 +89,7 @@ http://rubydoc.info/gems/weather_jp/
 
 ## Author
 
-[@taiki45](https://twitter.com/taiki45)
+[@taiki45](http://taiki45.github.io/)
 
 ## Contributing
 
