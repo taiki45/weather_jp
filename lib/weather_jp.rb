@@ -29,7 +29,7 @@ module WeatherJp
 
     def parse(str)
       if request = RequestParser.parser(str)
-        WeatherJp.get(request.city).get_weather(request.day)
+        get(request.city).get_weather(request.day)
       end
     end
   end
