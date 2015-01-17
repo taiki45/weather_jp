@@ -4,7 +4,7 @@ module WeatherJp
       def get(city_name)
         area_code, city_name = get_area_code(city_name.to_s)
         weathers = set_weathers(parse_rss(get_rss(area_code)))
-        [area_code, city_name, weathers]
+        [City.new(city_name, area_code), weathers]
       end
 
       def get_area_code(city_name)

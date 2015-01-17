@@ -1,18 +1,19 @@
 module WeatherJp
   class Weather
+    extend Forwardable
     include Enumerable
 
-    def initialize(area_code, city_name, weathers)
-      @area_code = area_code
-      @city_name = city_name
+    attr_reader :city, :day_weathers
+    def_delegators :city, :name, :area_code
+
+    def initialize(city, weathers)
+      @city = city
       @weathers = weathers
 
       @day_weathers = Array.new(@weathers.size) do |n|
-        DayWeather.new(@weathers, @city_name, n)
+        DayWeather.new(@weathers, city.name, n)
       end
     end
-
-    attr_reader :city_name, :area_code, :day_weathers
 
     def to_hash
       @weathers

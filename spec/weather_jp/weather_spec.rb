@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe 'Weather' do
   describe 'with Internet connetion' do
-    let(:area_code) { 'JAXX0085' }
+    let(:city) { WeatherJp::City.new(city_name, area_code) }
     let(:city_name) { 'tokyo' }
+    let(:area_code) { 'JAXX0085' }
     let(:weathers) do
       [
         {:day=>'今日', :forecast=>'晴のち雨', :max_temp=>29, :min_temp=>24, :rain=>80},
@@ -14,7 +15,7 @@ describe 'Weather' do
     end
 
     before do
-      @weather = WeatherJp::Weather.new(area_code, city_name, weathers)
+      @weather = WeatherJp::Weather.new(city, weathers)
     end
 
     describe '#to_hash' do 

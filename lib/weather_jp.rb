@@ -2,11 +2,13 @@ require 'uri'
 require 'open-uri'
 require 'rss'
 require 'nokogiri'
+require 'forwardable'
 
-require 'weather_jp/request_parser'
+require 'weather_jp/city'
 require 'weather_jp/weather'
 require 'weather_jp/day_weather'
 require 'weather_jp/wrapper'
+require 'weather_jp/request_parser'
 require 'weather_jp/version'
 
 module WeatherJp
@@ -14,8 +16,8 @@ module WeatherJp
 
   class << self
     def get(city_name, option = nil)
-      area_code, city_name, weathers = Wrapper.get(city_name)
-      weather = Weather.new(area_code, city_name, weathers)
+      city, weathers = Wrapper.get(city_name)
+      weather = Weather.new(city, weathers)
 
       if option
         weather.get_weather(option)
