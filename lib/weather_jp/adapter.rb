@@ -35,7 +35,7 @@ module WeatherJp
 
     def day_weathers
       day_weather_nodes.each_with_index.map do |n, i|
-        attrs = n.respond_to?(:to_h) ? n.to_h : n.values
+        attrs = Hash[n.attributes.map {|k, v| [k, v.value] }]
         DayWeather.new(attrs, city, i - 1)
       end
     end
@@ -44,9 +44,10 @@ module WeatherJp
       xml.xpath('/weatherdata/weather/*[attribute::skytextday or attribute::skytext]')
     end
 
+    # Ruby 2.0.0 version has no `Nokogiri::XML::Element#to_h`.
     def city
       @city ||= begin
-        attrs = weather_node.respond_to?(:to_h) ? weather_node.to_h : weather_node.values
+        attrs = Hash[weather_node.attributes.map {|k, v| [k, v.value]}]
         City.new(attrs['weathercityname'], attrs)
       end
     end
