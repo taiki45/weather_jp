@@ -5,7 +5,7 @@ module WeatherJp
     extend Forwardable
 
     # Canonical key names for attributes.
-    KEYS = %i(text high low rain date date_text date_code city)
+    KEYS = %i(text high low rain date date_text date_code city_name city)
 
     attr_reader :city, :date_code
 
@@ -16,6 +16,11 @@ module WeatherJp
       @attrs = attrs
       @city = city
       @date_code = date_code
+    end
+
+    # @return [String]
+    def city_name
+      city.name
     end
 
     # Sky status. i.e. 'sunny' or '晴れ'.
@@ -52,6 +57,7 @@ module WeatherJp
     end
 
     # Only available for current weather.
+    # i.e. '風向: 北北西 / 風速: 20 マイル'
     # @return [String, nil]
     def wind_text
       get('winddisplay')
@@ -59,7 +65,7 @@ module WeatherJp
 
     # @return [Date, nil]
     def date
-      date_text ? Date.parse(date_text) : nil
+      raw_date ? Date.parse(raw_date) : nil
     end
 
     # Japanese date text from current day.
@@ -74,8 +80,6 @@ module WeatherJp
         "明日"
       when 2
         "明後日"
-      when 3
-        "明々後日"
       else
         "#{date_code}日後"
       end
@@ -98,13 +102,9 @@ module WeatherJp
 
     # @return [Hash]
     def to_hash
-      Hash[KEYS.map {|k| [k, public_send(k)] }]
-    end
-
-    # @deprecated Use {#city} to get {Weatherjp::City} object.
-    # @return [String]
-    def city_name
-      city.name
+      h = Hash[KEYS.map {|k| [k, public_send(k)] }]
+      h[:city] = h[:city].to_hash
+      h
     end
 
     # @deprecated Use {#high}
@@ -127,6 +127,11 @@ module WeatherJp
     # Convert empty string to nil
     def get(key)
       @attrs[key].present? ? @attrs[key] : nil
+    end
+
+    # @return [String]
+    def raw_date
+      get('date')
     end
   end
 end

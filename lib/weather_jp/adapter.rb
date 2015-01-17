@@ -32,16 +32,16 @@ module WeatherJp
 
     def day_weathers
       day_weather_nodes.each_with_index.map do |n, i|
-        DayWeather.new(n.attributes, city, i - 1)
+        DayWeather.new(n.to_h, city, i - 1)
       end
     end
 
     def day_weather_nodes
-      xml.xpath('/weatherdata/weather/*[attribute::skytextday]')
+      xml.xpath('/weatherdata/weather/*[attribute::skytextday or attribute::skytext]')
     end
 
     def city
-      @city ||= City.new(weather_node.attributes['weathercityname'], weather_node.attributes)
+      @city ||= City.new(weather_node.to_h['weathercityname'], weather_node.to_h)
     end
 
     def weather_node

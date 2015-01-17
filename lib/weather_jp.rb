@@ -20,7 +20,7 @@ module WeatherJp
     # @param [String] city_name
     # @return [WeatherJp::Weather]
     def get(city_name)
-      Adapter.new(city_name).get
+      Adapter.get(city_name)
     end
 
     def parse(str)

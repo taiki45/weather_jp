@@ -52,15 +52,15 @@ module WeatherJp
     # Except current weather status.
     # @return [Array<WeatherJp::DayWeather>]
     def except_current
-      weathers.reject {|w| w.day_code == -1 }
+      weathers.reject {|w| w.date_code == -1 }
     end
 
-    # @param [String, Symbol] date
+    # @param [String, Symbol, Integer] date
     # @return [WeatherJp::DayWeather, nil]
     def for(date)
       case date
       when Date
-        raise NotImplemetedError
+        raise NotImplementedError
       when :current
         day = 0
       when :today
@@ -69,6 +69,8 @@ module WeatherJp
         day = 2
       when :day_after_tomorrow
         day = 3
+      else
+        day = date + 1
       end
 
       weathers[day]
@@ -76,10 +78,5 @@ module WeatherJp
 
     # @deprecated Use {#for}
     alias_method :get_weather, :for
-
-    # @deprecated This method will be removed.
-    def to_hash
-      @weathers
-    end
   end
 end

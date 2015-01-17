@@ -30,8 +30,6 @@ module WeatherJp
             day = 4
           when /今|いま/
             day = :current
-          else
-            raise 'oops...'
           end
 
           Request.new(data[:city], day)
