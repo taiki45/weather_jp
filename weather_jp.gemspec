@@ -21,4 +21,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency "activesupport"
   gem.add_development_dependency "rspec", "~> 3"
   gem.add_development_dependency "pry"
+  gem.add_development_dependency "webmock"
 end

@@ -1,6 +1,7 @@
-$:.unshift File.expand_path(File.join('..', '..', 'lib'), __FILE__)
-
+require 'webmock/rspec'
 require 'pry'
+
+$:.unshift File.expand_path(File.join('..', '..', 'lib'), __FILE__)
 require 'weather_jp'
 
 # Use RSpec context
