@@ -1,9 +1,6 @@
 require 'webmock/rspec'
 require 'pry'
 
-$:.unshift File.expand_path(File.join('..', '..', 'lib'), __FILE__)
-require 'weather_jp'
-
 # Use RSpec context
 module Fixturable
   def self.included(base)
@@ -28,3 +25,12 @@ module Fixturable
     File.expand_path(File.join('..', 'fixture'), __FILE__)
   end
 end
+
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter '/spec'
+end
+
+$:.unshift File.expand_path(File.join('..', '..', 'lib'), __FILE__)
+require 'weather_jp'
