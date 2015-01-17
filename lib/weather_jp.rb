@@ -17,14 +17,10 @@ module WeatherJp
   class ServiceUnavailable < WeatherJpError; end
 
   class << self
-    def get(city_name, option = nil)
-      weather = Wrapper.new(city_name).get
-
-      if option
-        weather.for(option)
-      else
-        weather
-      end
+    # @param [String] city_name
+    # @return [WeatherJp::Weather]
+    def get(city_name)
+      Wrapper.new(city_name).get
     end
 
     def customize_to_s(&code)
