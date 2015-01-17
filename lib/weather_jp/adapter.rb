@@ -75,6 +75,8 @@ module WeatherJp
       class << self
         def read(url)
           open(url).read
+        rescue OpenURI::HTTPError => e
+          raise ServiceUnavailable.new("status=#{e.message[0..-2]}")
         end
       end
     end

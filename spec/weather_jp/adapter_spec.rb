@@ -19,9 +19,26 @@ RSpec.describe WeatherJp::Adapter do
 
   describe WeatherJp::Adapter::Reader do
     describe '.read' do
-      before { stub_request(:get, 'http://example.com') }
       subject { described_class.read('http://example.com') }
-      it { is_expected.to eq('') }
+
+      context 'with valid condition' do
+        before { stub_request(:get, 'http://example.com') }
+        it { is_expected.to eq('') }
+      end
+
+      context 'with server down' do
+        before { stub_request(:get, 'http://example.com').to_return(status: 500) }
+        specify do
+          expect { subject }.to raise_error(WeatherJp::ServiceUnavailable, /500/)
+        end
+      end
+
+      context 'with server maintenance' do
+        before { stub_request(:get, 'http://example.com').to_return(status: 503) }
+        specify do
+          expect { subject }.to raise_error(WeatherJp::ServiceUnavailable, /503/)
+        end
+      end
     end
   end
 end
