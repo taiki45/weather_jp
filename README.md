@@ -1,11 +1,20 @@
 # weather_jp [![Build Status](https://secure.travis-ci.org/taiki45/weather_jp.png)](http://travis-ci.org/taiki45/weather_jp)
-Japan weather info API wrapper.
+Japan weather infomation API wrapper. Fetch Japan weather status or forecast as Ruby object easily.
 
-Fetch Japan weather info as Ruby object easily.
+## V2 upgrade guides
+The backend server returns differrnt contents from before. So V1 is not working. Please update to V2.
 
-http://taiki45.github.com/weather_jp
+And V2 contains some of new features, deprecations and removales.
 
-https://rubygems.org/gems/weather_jp
+- `WeatherJp::City` now available. You can get latitude/longitude of the city.
+- `WeatherJp::Weather#current`. The current weather is a little bit differrnt from day weather forecast.
+  - have: `temperature`, `wind_speed`, `wind_text`
+  - not have: `precip`, `high`, `low`.
+- `WeatherJp::Weather#each` now contains the `DayWeather` object which represents current weather status. If you do not want current weather status, use `each_without_current` or `except_current` method.
+- Remove `customize_to_s` method. This feature will be re-added as configurable procedure.
+- Remove option from `WeatherJp.get`. If you use these option, use `WeatherJp::Weather#for`.
+
+See deprecations at [API document page](http://rubydoc.info/gems/weather_jp/).
 
 ## Installation
 
@@ -27,7 +36,6 @@ Or install it yourself as:
 # creat weather object in differrnt ways
 tokyo = WeatherJp.get :tokyo
 akiba = WeatherJp.get "秋葉原"
-abuja = WeatherJp::Weather.new("アブジャ")
 tsuyama = WeatherJp.get "津山"
 
 # get weather info as String
@@ -35,53 +43,42 @@ tokyo.today.to_s
   #=> can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"
 
 # or your have unparsed string
-WeatherJp.parse("今日のうどん県の天気教えて下され〜〜").to_s
+WeatherJp.parse("今日の香川県の天気教えて下さい").to_s
   #=> "香川県 高松の今日の天気は曇のち晴れ 最高気温25度 最低気温17度 降水確率は20% です。"
 
 # to get weather info in differrnt ways
-akiba.get_weather(4) #=> <#DayWeather object>
-tokyo.today.forecast #=> can be "晴れ"
-tokyo.get_weather(:tomorrow).rain
+tokyo.today.text #=> can be "晴れ"
+tokyo.tomorrow.precip #=> can be 10
 akiba.day_after_tomorrow.to_s
-WeatherJp.get(:tokyo, :today).forecast
 
-# use Weather object
+# yields DayWeather object
 tokyo.each do |w|
   puts w.city_name
-  puts w.day
-  puts w.forecast
-  puts w.max_temp
-  puts w.min_temp
-  puts w.rain
-  w.each_pair {|k,v| puts k, v }
+  puts w.date
+  puts w.date_text
+  puts w.text
+  puts w.high
+  puts w.low
+  puts w.precip
 end
 
-akiba.map {|w| [w.day, w.forecast] }
+# You can use WeatherJp::City object
+tokyo.city => WeatherJp::City
+[tokyo.city.longitude, tokyo.city.latitude]
+
+akiba.map {|w| [w.date_text, w.text] }
 
 # or use as simple Array or Hash
 tokyo.to_a
+akiba.weathers
 tsuyama.each {|w| p w.to_hash }
-akiba.day_weathers
-
-# you can cutomize DayWeather#to_s method
-WeatherJp.get(:tokyo).today.to_s #=> "東京 東京都の天気は晴れ....etc"
-
-WeatherJp.customize_to_s do
-  word = "#{day}の#{city_name}は#{forecast} "
-  word << "最高気温は#{max_temp} " if max_temp
-  word << "最低気温は#{min_temp} " if min_temp
-  word << "降水確率は#{rain}%" if rain
-  word << "でし"
-  word
-end
-
-WeatherJp.get(:tokyo).today.to_s #=> "本日の東京 東京都は晴れ...."
-
 ```
+
+See more detail in [API document page](http://rubydoc.info/gems/weather_jp/).
 
 ## Requires
 
-Ruby >= 1.9.2
+Ruby >= 2.0.0
 
 ## Documents
 
