@@ -1,5 +1,5 @@
 module WeatherJp
-  # @attr_reader [Weatherjp::City] city
+  # @attr_reader [WeatherJp::City] city
   # @attr_reader [Integer] date_code Current is 0, today is 1, tomorrow is 2
   class DayWeather
     extend Forwardable
@@ -10,7 +10,7 @@ module WeatherJp
     attr_reader :city, :date_code
 
     # @param [Hash] attrs
-    # @param [Weatherjp::City] city
+    # @param [WeatherJp::City] city
     # @param [Integer] date_code
     def initialize(attrs, city, date_code)
       @attrs = attrs
