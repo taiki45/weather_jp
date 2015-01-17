@@ -8,7 +8,7 @@ require 'active_support/core_ext/object'
 require 'weather_jp/city'
 require 'weather_jp/weather'
 require 'weather_jp/day_weather'
-require 'weather_jp/wrapper'
+require 'weather_jp/adapter'
 require 'weather_jp/request_parser'
 require 'weather_jp/version'
 
@@ -20,7 +20,7 @@ module WeatherJp
     # @param [String] city_name
     # @return [WeatherJp::Weather]
     def get(city_name)
-      Wrapper.new(city_name).get
+      Adapter.new(city_name).get
     end
 
     def parse(str)

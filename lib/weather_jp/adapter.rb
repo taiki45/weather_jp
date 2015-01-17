@@ -1,7 +1,7 @@
 require 'rack/utils'
 
 module WeatherJp
-  class Wrapper
+  class Adapter
     class << self
       def get(city_name)
         new(city_name).get
