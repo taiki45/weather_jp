@@ -53,7 +53,7 @@ module WeatherJp
     end
 
     def xml_str
-      @xml_str ||= open(url).read
+      @xml_str ||= Reader.read(url)
     end
 
     def url
@@ -66,6 +66,14 @@ module WeatherJp
         culture: LANG,
         weasearchstr: name,
       }
+    end
+
+    module Reader
+      class << self
+        def read(url)
+          open(url).read
+        end
+      end
     end
   end
 end
