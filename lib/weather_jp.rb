@@ -18,13 +18,16 @@ module WeatherJp
 
   class << self
     # @param [String] city_name
-    # @return [WeatherJp::Weather]
+    # @return [WeatherJp::Weather, nil]
     def get(city_name)
       Adapter.get(city_name)
     end
 
-    def parse(str)
-      if request = RequestParser.parser(str)
+    # Request like '明日の東京の天気教えて'.
+    # @param [String] query
+    # @return [WeatherJp::Weather, nil]
+    def parse(query)
+      if request = RequestParser.parser(query)
         get(request.city).get_weather(request.day)
       end
     end
