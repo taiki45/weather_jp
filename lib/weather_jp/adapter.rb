@@ -3,6 +3,9 @@ require 'rack/utils'
 module WeatherJp
   class Adapter
     class << self
+      # Returns nil when not found weather forecasts.
+      # @param [String] city_name
+      # @return [WeatherJp::Weather, nil]
       def get(city_name)
         new(city_name).get
       end
@@ -20,7 +23,7 @@ module WeatherJp
     end
 
     def get
-      weather
+      weather_node ? weather : nil
     end
 
     def build_weather(attrs, day_weathers)
