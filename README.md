@@ -36,7 +36,6 @@ Or install it yourself as:
 # creat weather object in differrnt ways
 tokyo = WeatherJp.get :tokyo
 akiba = WeatherJp.get "秋葉原"
-abuja = WeatherJpget "アブジャ"
 tsuyama = WeatherJp.get "津山"
 
 # get weather info as String
