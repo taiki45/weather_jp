@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'uri'
 
+require 'active_support'
 require 'active_support/core_ext/object'
 require 'rack'
 
