@@ -14,14 +14,14 @@ require 'weather_jp/version'
 
 module WeatherJp
   class WeatherJpError < StandardError; end
+  class ServiceUnavailable < WeatherJpError; end
 
   class << self
     def get(city_name, option = nil)
-      city, weathers = Wrapper.get(city_name)
-      weather = Weather.new(city, weathers)
+      weather = Wrapper.new(city_name).get
 
       if option
-        weather.get_weather(option)
+        weather.for(option)
       else
         weather
       end
