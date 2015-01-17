@@ -3,6 +3,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'forwardable'
 require 'rack'
+require 'active_support/core_ext/object'
 
 require 'weather_jp/city'
 require 'weather_jp/weather'
