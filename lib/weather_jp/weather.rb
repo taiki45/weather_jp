@@ -15,6 +15,7 @@ module WeatherJp
       @weathers
     end
 
+    # TODO
     alias to_a to_hash
 
     def each
