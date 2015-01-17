@@ -20,10 +20,10 @@ describe WeatherJp::RequestParser do
         "あきるの市の今日の天気" => {day: "today", city: "あきるの市"},
         "あきるの市の今日の天気教えなさい" => {day: "today", city: "あきるの市"},
         "今日のあきるの市の天気" => {day: "today", city: "あきるの市"}
-      }.each do |test, expect|
-        request = WeatherJp::RequestParser.parser(test)
-        request.city.should == expect[:city]
-        request.day.should == expect[:day]
+      }.each do |sentence, expected|
+        request = WeatherJp::RequestParser.parser(sentence)
+        request.city.should == expected[:city]
+        request.day.should == expected[:day]
       end
     end
   end
