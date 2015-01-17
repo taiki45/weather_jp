@@ -37,7 +37,7 @@ module WeatherJp
 
     def initialize(city_name)
       @area_code, @city_name, @weathers = Wrapper.get(city_name)
-      @day_weathers = Array.new(@weathers.size) do |n| 
+      @day_weathers = Array.new(@weathers.size) do |n|
         DayWeather.new(@weathers,@city_name, n)
       end
     end
@@ -109,11 +109,9 @@ module WeatherJp
 
       def parse_xml(xml)
         doc = Nokogiri::XML(xml)
-        begin 
-          code =
-            doc.xpath('//weather').attr('weatherlocationcode').value
-          full_name = 
-            doc.xpath('//weather').attr('weatherlocationname').value
+        begin
+          code = doc.xpath('//weather').attr('weatherlocationcode').value
+          full_name = doc.xpath('//weather').attr('weatherlocationname').value
         rescue
           raise WeatherJpError, "Cant't parse XML"
         end
@@ -158,8 +156,8 @@ module WeatherJp
             [:max_temp, :min_temp, :rain].each do |j|
               h[j] = h[j].to_i if h[j]
             end
-            if h[:day].match /の天気/u
-              h[:day] = h[:day].slice /(.*)の天気/u, 1
+            if h[:day].match(/の天気/u)
+              h[:day] = h[:day].slice(/(.*)の天気/u, 1)
             end
             weathers << h
           end
