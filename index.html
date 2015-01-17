@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -21,24 +21,47 @@
       <div class="inner">
         <h1>weather_jp</h1>
         <h2>Fetch Japan weather info as Ruby object easily.</h2>
-        <a href="https://github.com/taiki45/weather_jp" class="button"><small>View project on</small>GitHub</a>
+        <a href="https://github.com/taiki45/weather_jp" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
 
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h2>About</h2>
+          <h1>
+<a id="weather_jp" class="anchor" href="#weather_jp" aria-hidden="true"><span class="octicon octicon-link"></span></a>weather_jp</h1>
 
-<p>Japan weather info API wrapper.</p>
+<p>Japan weather infomation API wrapper. Fetch Japan weather status or forecast as Ruby object easily.</p>
 
-<p>Fetch Japan weather info as Ruby object easily.</p>
+<h2>
+<a id="v2-upgrade-guides" class="anchor" href="#v2-upgrade-guides" aria-hidden="true"><span class="octicon octicon-link"></span></a>V2 upgrade guides</h2>
 
-<p><a href="http://taiki45.github.com/weather_jp">http://taiki45.github.com/weather_jp</a></p>
+<p>The backend server returns differrnt contents from before. So V1 is not working. Please update to V2.</p>
 
-<p><a href="https://rubygems.org/gems/weather_jp">https://rubygems.org/gems/weather_jp</a></p>
+<p>And V2 contains some of new features, deprecations and removales.</p>
 
-<h2>Installation</h2>
+<ul>
+<li>
+<code>WeatherJp::City</code> now available. You can get latitude/longitude of the city.</li>
+<li>
+<code>WeatherJp::Weather#current</code>. The current weather is a little bit differrnt from day weather forecast.
+
+<ul>
+<li>have: <code>temperature</code>, <code>wind_speed</code>, <code>wind_text</code>
+</li>
+<li>not have: <code>precip</code>, <code>high</code>, <code>low</code>.</li>
+</ul>
+</li>
+<li>
+<code>WeatherJp::Weather#each</code> now contains the <code>DayWeather</code> object which represents current weather status. If you do not want current weather status, use <code>each_without_current</code> or <code>except_current</code> method.</li>
+<li>Remove <code>customize_to_s</code> method. This feature will be re-added as configurable procedure.</li>
+<li>Remove option from <code>WeatherJp.get</code>. If you use these option, use <code>WeatherJp::Weather#for</code>.</li>
+</ul>
+
+<p>See deprecations at <a href="http://rubydoc.info/gems/weather_jp/">API document page</a>.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Add this line to your application's Gemfile:</p>
 
@@ -47,7 +70,7 @@
 
 <p>And then execute:</p>
 
-<pre><code>$ bundle
+<pre><code>$ bundle install
 </code></pre>
 
 <p>Or install it yourself as:</p>
@@ -55,76 +78,68 @@
 <pre><code>$ gem install weather_jp
 </code></pre>
 
-<h2>Usage</h2>
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<div class="highlight"><pre><span class="c1"># creat weather object in differrnt ways</span>
-<span class="n">tokyo</span> <span class="o">=</span> <span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span> <span class="ss">:tokyo</span>
-<span class="n">akiba</span> <span class="o">=</span> <span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span> <span class="s2">"秋葉原"</span>
-<span class="n">abuja</span> <span class="o">=</span> <span class="no">WeatherJp</span><span class="o">::</span><span class="no">Weather</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"アブジャ"</span><span class="p">)</span>
-<span class="n">tsuyama</span> <span class="o">=</span> <span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span> <span class="s2">"津山"</span>
+<div class="highlight highlight-ruby"><pre><span class="pl-c"># creat weather object in differrnt ways</span>
+tokyo <span class="pl-k">=</span> <span class="pl-s3">WeatherJp</span>.get <span class="pl-c1">:tokyo</span>
+akiba <span class="pl-k">=</span> <span class="pl-s3">WeatherJp</span>.get <span class="pl-s1"><span class="pl-pds">"</span>秋葉原<span class="pl-pds">"</span></span>
+tsuyama <span class="pl-k">=</span> <span class="pl-s3">WeatherJp</span>.get <span class="pl-s1"><span class="pl-pds">"</span>津山<span class="pl-pds">"</span></span>
 
-<span class="c1"># get weather info as String</span>
-<span class="n">tokyo</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span>
-  <span class="c1">#=&gt; can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"</span>
+<span class="pl-c"># get weather info as String</span>
+tokyo.today.to_s
+  <span class="pl-c">#=&gt; can be "東京都 東京の天気は曇りのち晴れ、最高気温34度...etc"</span>
 
-<span class="c1"># or your have unparsed string</span>
-<span class="no">WeatherJp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"今日のうどん県の天気教えて下され〜〜"</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
-  <span class="c1">#=&gt; "香川県 高松の今日の天気は曇のち晴れ 最高気温25度 最低気温17度 降水確率は20% です。"</span>
+<span class="pl-c"># or your have unparsed string</span>
+<span class="pl-s3">WeatherJp</span>.parse(<span class="pl-s1"><span class="pl-pds">"</span>今日の香川県の天気教えて下さい<span class="pl-pds">"</span></span>).to_s
+  <span class="pl-c">#=&gt; "香川県 高松の今日の天気は曇のち晴れ 最高気温25度 最低気温17度 降水確率は20% です。"</span>
 
-<span class="c1"># to get weather info in differrnt ways</span>
-<span class="n">akiba</span><span class="o">.</span><span class="n">get_weather</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; &lt;#DayWeather object&gt;</span>
-<span class="n">tokyo</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">forecast</span> <span class="c1">#=&gt; can be "晴れ"</span>
-<span class="n">tokyo</span><span class="o">.</span><span class="n">get_weather</span><span class="p">(</span><span class="ss">:tomorrow</span><span class="p">)</span><span class="o">.</span><span class="n">rain</span>
-<span class="n">akiba</span><span class="o">.</span><span class="n">day_after_tomorrow</span><span class="o">.</span><span class="n">to_s</span>
-<span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">,</span> <span class="ss">:today</span><span class="p">)</span><span class="o">.</span><span class="n">forecast</span>
+<span class="pl-c"># to get weather info in differrnt ways</span>
+tokyo.today.text <span class="pl-c">#=&gt; can be "晴れ"</span>
+tokyo.tomorrow.precip <span class="pl-c">#=&gt; can be 10</span>
+akiba.day_after_tomorrow.to_s
 
-<span class="c1"># use Weather object</span>
-<span class="n">tokyo</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
-  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">city_name</span>
-  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">day</span>
-  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">forecast</span>
-  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">max_temp</span>
-  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">min_temp</span>
-  <span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">rain</span>
-  <span class="n">w</span><span class="o">.</span><span class="n">each_pair</span> <span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="p">}</span>
-<span class="k">end</span>
+<span class="pl-c"># yields DayWeather object</span>
+tokyo.each <span class="pl-k">do </span>|<span class="pl-vo">w</span>|
+  puts w.city_name
+  puts w.date
+  puts w.date_text
+  puts w.text
+  puts w.high
+  puts w.low
+  puts w.precip
+<span class="pl-k">end</span>
 
-<span class="n">akiba</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span><span class="o">|</span><span class="n">w</span><span class="o">|</span> <span class="o">[</span><span class="n">w</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">forecast</span><span class="o">]</span> <span class="p">}</span>
+<span class="pl-c"># You can use WeatherJp::City object</span>
+tokyo.city =&gt; <span class="pl-s3">WeatherJp</span>::<span class="pl-vo">City</span>
+[tokyo.city.longitude, tokyo.city.latitude]
 
-<span class="c1"># or use as simple Array or Hash</span>
-<span class="n">tokyo</span><span class="o">.</span><span class="n">to_a</span>
-<span class="n">tsuyama</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">w</span><span class="o">|</span> <span class="nb">p</span> <span class="n">w</span><span class="o">.</span><span class="n">to_hash</span> <span class="p">}</span>
-<span class="n">akiba</span><span class="o">.</span><span class="n">day_weathers</span>
+akiba.map {|<span class="pl-vo">w</span>| [w.date_text, w.text] }
 
-<span class="c1"># you can cutomize DayWeather#to_s method</span>
-<span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "東京 東京都の天気は晴れ....etc"</span>
+<span class="pl-c"># or use as simple Array or Hash</span>
+tokyo.to_a
+akiba.weathers
+tsuyama.each {|<span class="pl-vo">w</span>| p w.to_hash }</pre></div>
 
-<span class="no">WeatherJp</span><span class="o">.</span><span class="n">customize_to_s</span> <span class="k">do</span>
-  <span class="n">word</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">day</span><span class="si">}</span><span class="s2">の</span><span class="si">#{</span><span class="n">city_name</span><span class="si">}</span><span class="s2">は</span><span class="si">#{</span><span class="n">forecast</span><span class="si">}</span><span class="s2"> "</span>
-  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"最高気温は</span><span class="si">#{</span><span class="n">max_temp</span><span class="si">}</span><span class="s2"> "</span> <span class="k">if</span> <span class="n">max_temp</span>
-  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"最低気温は</span><span class="si">#{</span><span class="n">min_temp</span><span class="si">}</span><span class="s2"> "</span> <span class="k">if</span> <span class="n">min_temp</span>
-  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"降水確率は</span><span class="si">#{</span><span class="n">rain</span><span class="si">}</span><span class="s2">%"</span> <span class="k">if</span> <span class="n">rain</span>
-  <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="s2">"でし"</span>
-  <span class="n">word</span>
-<span class="k">end</span>
+<p>See more detail in <a href="http://rubydoc.info/gems/weather_jp/">API document page</a>.</p>
 
-<span class="no">WeatherJp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:tokyo</span><span class="p">)</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "本日の東京 東京都は晴れ...."</span>
+<h2>
+<a id="requires" class="anchor" href="#requires" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requires</h2>
 
-</pre></div>
+<p>Ruby &gt;= 2.0.0</p>
 
-<h2>Requires</h2>
-
-<p>Ruby &gt;= 1.9.2</p>
-
-<h2>Documents</h2>
+<h2>
+<a id="documents" class="anchor" href="#documents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documents</h2>
 
 <p><a href="http://rubydoc.info/gems/weather_jp/">http://rubydoc.info/gems/weather_jp/</a></p>
 
-<h2>Author</h2>
+<h2>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h2>
 
-<p><a href="https://twitter.com/taiki45">@taiki45</a></p>
+<p><a href="http://taiki45.github.io/">@taiki45</a></p>
 
-<h2>Contributing</h2>
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
 <ol>
 <li>Fork it</li>
@@ -132,7 +147,9 @@
 <li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
-</ol><p>Feel free to any requests or bug reports, issues, comments.</p>
+</ol>
+
+<p>Feel free to any requests or bug reports, issues, comments.</p>
 
 <p>Thank you :)</p>
         </section>
@@ -149,7 +166,7 @@
 
           <p class="repo-owner"><a href="https://github.com/taiki45/weather_jp"></a> is maintained by <a href="https://github.com/taiki45">taiki45</a>.</p>
 
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
