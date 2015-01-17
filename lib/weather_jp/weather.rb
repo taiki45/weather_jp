@@ -1,59 +1,85 @@
 module WeatherJp
+  # @attr_reader [WeatherJp::City] city
+  # @attr_reader [Array<WeatherJp::DayWeather>] weathers
+  # @attr_reader [WeatherJp::DayWeather] current
+  # @attr_reader [WeatherJp::DayWeather] today
+  # @attr_reader [WeatherJp::DayWeather] tomorrow
+  # @attr_reader [WeatherJp::DayWeather] day_after_tomorrow
   class Weather
+    class << self
+      private
+      # Define extra readers
+      def define_readers(*names)
+        names.each {|s| define_method(s) { self.for(s) } }
+      end
+    end
+
     extend Forwardable
     include Enumerable
 
-    attr_reader :city, :day_weathers
-    def_delegators :city, :name, :area_code
+    define_readers :current, :today, :tomorrow, :day_after_tomorrow
+    attr_reader :city, :weathers
+    alias_method :day_weathers, :weathers
+    alias_method :to_a, :weathers
 
+    # @param [WeatherJp::City] city
+    # @param [Array<WeatherJp::DayWeather>] weathers
     def initialize(city, weathers)
       @city = city
       @weathers = weathers
-
-      @day_weathers = Array.new(@weathers.size) do |n|
-        DayWeather.new(@weathers, city.name, n)
-      end
     end
 
-    def to_hash
-      @weathers
+    # @yield [WeatherJp::DayWeather]
+    # @return [WeatherJp::Weather]
+    def each(&block)
+      each_with_all(&block)
     end
 
-    # TODO
-    alias to_a to_hash
-
-    def each
-      @day_weathers.each do |i|
-        yield i
-      end
+    # @yield [WeatherJp::DayWeather]
+    # @return [WeatherJp::Weather]
+    def each_with_all
+      weathers.each {|i| yield i }
       self
     end
 
-    # TODO: remove number acceptance
-    # @param [String, Symbol, Integer] day
-    def get_weather(day = 0)
-      begin
-        day = day.to_sym if day.class == String
-        case day
-        when :today
-          day = 0
-        when :tomorrow
-          day = 1
-        when :day_after_tomorrow
-          day = 2
-        end
-        raise WeatherJpError if @day_weathers[day] == nil
-        @day_weathers[day]
-      rescue
-        raise WeatherJpError,
-          "unvaild argument '#{day}' for get_weather"
-      end
+    # @yield [WeatherJp::DayWeather]
+    # @return [WeatherJp::Weather]
+    def each_without_current
+      except_current.each {|i| yield i }
+      self
     end
 
-    %w(today tomorrow day_after_tomorrow).each do |s|
-      define_method(s.to_sym) do
-        get_weather(s)
+    # Except current weather status.
+    # @return [Array<WeatherJp::DayWeather>]
+    def except_current
+      weathers.reject {|w| w.day_code == -1 }
+    end
+
+    # @param [String, Symbol] date
+    # @return [WeatherJp::DayWeather, nil]
+    def for(date)
+      case date
+      when Date
+        raise NotImplemetedError
+      when :current
+        day = 0
+      when :today
+        day = 1
+      when :tomorrow
+        day = 2
+      when :day_after_tomorrow
+        day = 3
       end
+
+      weathers[day]
+    end
+
+    # @deprecated Use {#for}
+    alias_method :get_weather, :for
+
+    # @deprecated This method will be removed.
+    def to_hash
+      @weathers
     end
   end
 end
