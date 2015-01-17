@@ -8,19 +8,19 @@ describe "WeatherJp" do
 
   describe ".get" do
     it "should return Weather instance" do
-      @weather.class.should == WeatherJp::Weather
+      expect(@weather.class).to eq(WeatherJp::Weather)
     end
 
     it "should accept option and return DayWeather object" do
-      WeatherJp.get(:tokyo, :today).class.
-        should == WeatherJp::Weather::DayWeather
+      expect(WeatherJp.get(:tokyo, :today).class).
+        to eq(WeatherJp::Weather::DayWeather)
     end
   end
 
   describe ".customize_to_s" do
     it "should customize DayWeather#to_s" do
       WeatherJp.customize_to_s { 'success' }
-      WeatherJp.get(:tokyo, :today).to_s.should == 'success'
+      expect(WeatherJp.get(:tokyo, :today).to_s).to eq('success')
     end
   end
 end

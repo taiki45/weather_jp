@@ -18,14 +18,14 @@ describe "Wrapper" do
         "木曜日: 曇り. 最低: 20&#176;C. 最高: 28&#176;C. 降水確率: 40",
         "金曜日: 曇り. 最低: -20&#176;C. 最高: -3&#176;C. 降水確率: 40"
       ]
-      WeatherJp::Wrapper.set_weathers(dummy_data).should == expect
+      expect(WeatherJp::Wrapper.set_weathers(dummy_data)).to eq(expect)
     end
 
     it "should parse non-japan weather info" do
       #expect = [{:day=>"現在の天気", :forecast=>"(5時51分 現在)晴れ", :max_temp=>nil, :min_temp=>nil, :rain=>nil}]
       expect = [{:day=>"現在", :forecast=>"(5時51分 現在)晴れ", :max_temp=>nil, :min_temp=>nil, :rain=>nil}]
       dummy = ["現在の天気: (5時51分 現在)晴れ. 7&#176;C (体感気温 8). 湿度: 89"]
-      WeatherJp::Wrapper.set_weathers(dummy).should == expect
+      expect(WeatherJp::Wrapper.set_weathers(dummy)).to eq(expect)
     end
   end
 
@@ -37,18 +37,18 @@ describe "Wrapper" do
         "水曜日: 曇時々雨. 最低: 20&#176;C. 最高: 25&#176;C. 降水確率: 50",
         "木曜日: 曇り. 最低: 20&#176;C. 最高: 28&#176;C. 降水確率: 40"
       ]
-      WeatherJp::Wrapper.parse_rss(get_dummy_rss).should == expect
+      expect(WeatherJp::Wrapper.parse_rss(get_dummy_rss)).to eq(expect)
     end
 
     it "should parse non-japan data" do
       expect = ["現在の天気: (5時51分 現在)晴れ. 7&#176;C (体感気温 8). 湿度: 89"]
-      WeatherJp::Wrapper.parse_rss(get_ny_rss).should == expect
+      expect(WeatherJp::Wrapper.parse_rss(get_ny_rss)).to eq(expect)
     end
 
     describe ".remove_html_tag" do
       it "should remove html tags" do
         str = %q(<html>a<a href="dummy">b</a><span>c</sapan></html>)
-        WeatherJp::Wrapper.remove_html_tag(str).should == %(""a""b""""c"""")
+        expect(WeatherJp::Wrapper.remove_html_tag(str)).to eq(%(""a""b""""c""""))
       end
     end
   end
