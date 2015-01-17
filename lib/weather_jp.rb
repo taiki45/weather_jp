@@ -26,8 +26,8 @@ module WeatherJp
     end
 
     def parse(str)
-      if day_and_city = RequestParser.parser(str)
-        WeatherJp.get(day_and_city[:city]).get_weather(day_and_city[:day])
+      if request = RequestParser.parser(str)
+        WeatherJp.get(request.city).get_weather(request.day)
       end
     end
   end

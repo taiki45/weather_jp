@@ -1,5 +1,8 @@
 module WeatherJp
   module RequestParser
+    class Request < Struct.new(:city, :day)
+    end
+
     class << self
       RequestMatcher = /
         ((?<city>.*)の
@@ -28,7 +31,7 @@ module WeatherJp
             raise WeatherJpError, "Can't parse given String"
           end
 
-          {day: day, city: data[:city]}
+          Request.new(data[:city], day)
         else
           nil
         end

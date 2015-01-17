@@ -21,7 +21,9 @@ describe WeatherJp::RequestParser do
         "あきるの市の今日の天気教えなさい" => {day: "today", city: "あきるの市"},
         "今日のあきるの市の天気" => {day: "today", city: "あきるの市"}
       }.each do |test, expect|
-        WeatherJp::RequestParser.parser(test).should == expect
+        request = WeatherJp::RequestParser.parser(test)
+        request.city.should == expect[:city]
+        request.day.should == expect[:day]
       end
     end
   end
