@@ -17,7 +17,7 @@ module WeatherJp
           data = Regexp.last_match
           day = data[:day]
           case day
-          when /今日|きょう|今|いま/u
+          when /今日|きょう/u
             day = 'today'
           when /明日|あした/u
             day = 'tomorrow'
@@ -27,7 +27,10 @@ module WeatherJp
             day = 3
           when /4日後|４日後/u
             day = 4
+          when /今|いま/
+            day = 'current'
           else
+            # TODO: error
             raise WeatherJpError, "Can't parse given String"
           end
 
