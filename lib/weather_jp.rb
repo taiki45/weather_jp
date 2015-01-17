@@ -1,13 +1,13 @@
-# -*- coding:utf-8 -*-
+require 'uri'
+require 'open-uri'
+require 'rss'
+require 'nokogiri'
+
 require 'weather_jp/request_parser'
 require 'weather_jp/weather'
 require 'weather_jp/day_weather'
 require 'weather_jp/wrapper'
 require 'weather_jp/version'
-require 'uri'
-require 'open-uri'
-require 'rss'
-require 'nokogiri'
 
 module WeatherJp
   class WeatherJpError < StandardError; end
