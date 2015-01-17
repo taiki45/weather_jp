@@ -1,4 +1,5 @@
-# weather_jp [![Build Status](https://secure.travis-ci.org/taiki45/weather_jp.png)](http://travis-ci.org/taiki45/weather_jp)
+# weather_jp
+[![Build Status](https://travis-ci.org/taiki45/weather_jp.svg?branch=master)](https://travis-ci.org/taiki45/weather_jp)
 Japan weather infomation API wrapper. Fetch Japan weather status or forecast as Ruby object easily.
 
 ## V2 upgrade guides
