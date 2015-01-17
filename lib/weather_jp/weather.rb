@@ -2,10 +2,13 @@ module WeatherJp
   class Weather
     include Enumerable
 
-    def initialize(city_name)
-      @area_code, @city_name, @weathers = Wrapper.get(city_name)
+    def initialize(area_code, city_name, weathers)
+      @area_code = area_code
+      @city_name = city_name
+      @weathers = weathers
+
       @day_weathers = Array.new(@weathers.size) do |n|
-        DayWeather.new(@weathers,@city_name, n)
+        DayWeather.new(@weathers, @city_name, n)
       end
     end
 
@@ -25,6 +28,8 @@ module WeatherJp
       self
     end
 
+    # TODO: remove number acceptance
+    # @param [String, Symbol, Integer] day
     def get_weather(day = 0)
       begin
         day = day.to_sym if day.class == String

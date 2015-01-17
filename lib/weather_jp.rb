@@ -14,10 +14,13 @@ module WeatherJp
 
   class << self
     def get(city_name, option = nil)
+      area_code, city_name, weathers = Wrapper.get(city_name)
+      weather = Weather.new(area_code, city_name, weathers)
+
       if option
-        Weather.new(city_name).get_weather(option)
+        weather.get_weather(option)
       else
-        Weather.new(city_name)
+        weather
       end
     end
 

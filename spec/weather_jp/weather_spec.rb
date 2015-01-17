@@ -1,36 +1,20 @@
-# -*- coding: utf-8 -*-
-
 require 'spec_helper'
 
 describe 'Weather' do
   describe 'with Internet connetion' do
-    before(:all) do
-      @weather = WeatherJp::Weather.new(:tokyo)
+    let(:area_code) { 'JAXX0085' }
+    let(:city_name) { 'tokyo' }
+    let(:weathers) do
+      [
+        {:day=>'今日', :forecast=>'晴のち雨', :max_temp=>29, :min_temp=>24, :rain=>80},
+        {:day=>'明日', :forecast=>'雨のち晴', :max_temp=>30, :min_temp=>22, :rain=>60},
+        {:day=>'火曜日', :forecast=>'曇時々晴', :max_temp=>27, :min_temp=>22, :rain=>30},
+        {:day=>'水曜日', :forecast=>'曇時々雨', :max_temp=>25, :min_temp=>20, :rain=>50}
+      ]
     end
 
-    describe '#initialize' do
-      it 'should have @area_code and can access' do
-        expect(@weather.area_code).to eq('JAXX0085')
-      end
-
-      it 'should accept Symbol argument' do
-        weather = WeatherJp::Weather.new :tokyo
-        expect(weather.city_name).to eq('tokyo')
-      end
-
-      it 'should have @day_weathers as Array' do
-        expect(@weather.day_weathers.class).to eq(Array)
-      end
-
-      it 'should have DayWeather instance in @day_weathers' do
-        @weather.day_weathers.each do |w|
-          expect(w.class).to eq(WeatherJp::Weather::DayWeather)
-        end
-      end
-
-      it 'should have 5 DayWeather instance in @day_weathers' do
-        expect(@weather.day_weathers.size).to eq(5)
-      end
+    before do
+      @weather = WeatherJp::Weather.new(area_code, city_name, weathers)
     end
 
     describe '#to_hash' do 
@@ -86,8 +70,8 @@ describe 'Weather' do
           not_to raise_error
       end
 
-      it 'should accept 0 to 4 number as argument' do
-        (0..4).each do |n|
+      it 'should accept 0 to 2 number as argument' do
+        (0..2).each do |n|
           expect(){ @weather.get_weather(n) }.
             not_to raise_error
         end
@@ -108,18 +92,18 @@ describe 'Weather' do
 
     describe '#today, #tomorrow, #day_after_tomorrow' do
       it 'should not error when call #today or something' do
-        %w(today tomorrow day_after_tomorrow).each do |s|
-          expect(){ @weather.send(s.to_sym) }.
-            not_to raise_error
-        end
+      %w(today tomorrow day_after_tomorrow).each do |s|
+        expect(){ @weather.send(s.to_sym) }.
+          not_to raise_error
       end
+    end
 
-      it 'should return DayWeather object' do
-        %w(today tomorrow day_after_tomorrow).each do |s|
-          expect(@weather.send(s.to_sym).class).
-            to eq(WeatherJp::Weather::DayWeather)
-        end
+    it 'should return DayWeather object' do
+      %w(today tomorrow day_after_tomorrow).each do |s|
+        expect(@weather.send(s.to_sym).class).
+          to eq(WeatherJp::Weather::DayWeather)
       end
+    end
     end
   end
 end
