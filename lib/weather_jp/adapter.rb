@@ -35,7 +35,8 @@ module WeatherJp
 
     def day_weathers
       day_weather_nodes.each_with_index.map do |n, i|
-        DayWeather.new(n.to_h, city, i - 1)
+        attrs = n.respond_to?(:to_h) ? n.to_h : n.values
+        DayWeather.new(attrs, city, i - 1)
       end
     end
 
@@ -44,7 +45,10 @@ module WeatherJp
     end
 
     def city
-      @city ||= City.new(weather_node.to_h['weathercityname'], weather_node.to_h)
+      @city ||= begin
+        attrs = weather_node.respond_to?(:to_h) ? weather_node.to_h : weather_node.values
+        City.new(attrs['weathercityname'], attrs)
+      end
     end
 
     def weather_node
