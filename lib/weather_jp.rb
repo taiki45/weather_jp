@@ -99,8 +99,8 @@ module WeatherJp
 
       def get_xml(city_name)
         result = []
-        open(URI.encode("http://weather.service.msn.com/" +
-          "find.aspx?outputview=search&weadegreetype=C&culture=ja-JP&" +
+        open(URI.encode('http://weather.service.msn.com/' +
+          'find.aspx?outputview=search&weadegreetype=C&culture=ja-JP&' +
           "weasearchstr=#{city_name}")) do |xml|
           result = yield xml
         end
@@ -113,7 +113,7 @@ module WeatherJp
           code = doc.xpath('//weather').attr('weatherlocationcode').value
           full_name = doc.xpath('//weather').attr('weatherlocationname').value
         rescue
-          raise WeatherJpError, "Cant't parse XML"
+          raise WeatherJpError, 'Can not parse XML'
         end
         [code.slice(3..-1), full_name]
       end
@@ -121,14 +121,14 @@ module WeatherJp
       def get_rss(area_code)
         begin
           uri = URI.parse(
-            "http://weather.jp.msn.com/" +
+            'http://weather.jp.msn.com/' +
             "RSS.aspx?wealocations=wc:#{area_code}&" +
-            "weadegreetype=C&culture=ja-JP"
+            'weadegreetype=C&culture=ja-JP'
           )
           RSS::Parser.parse(uri, false)
         rescue
           raise WeatherJpError,
-            "the MSN weather sever may be downed, or got invaild city code"
+            'the MSN weather sever may be downed, or got invaild city code'
         end
       end
 
@@ -164,7 +164,7 @@ module WeatherJp
           weathers
         rescue NameError
           raise WeatherJpError,
-            "the MSN weather sever may be downed, or something wrong"
+            'the MSN weather sever may be downed, or something wrong'
         end
       end
     end
