@@ -1,8 +1,8 @@
 require 'uri'
 require 'open-uri'
-require 'rss'
 require 'nokogiri'
 require 'forwardable'
+require 'rack'
 
 require 'weather_jp/city'
 require 'weather_jp/weather'

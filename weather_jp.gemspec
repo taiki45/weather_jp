@@ -15,8 +15,9 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = WeatherJp::VERSION
 
-  gem.add_dependency "nokogiri", ">= 1.6.5"
+  gem.add_dependency "nokogiri" # was "1.6.5"
   gem.add_dependency "rake", ">= 0.9.2"
+  gem.add_dependency "rack"
   gem.add_development_dependency "rspec", "~> 3"
   gem.add_development_dependency "pry"
 end
