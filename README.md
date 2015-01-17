@@ -60,14 +60,13 @@ tokyo.each do |w|
   puts w.high
   puts w.low
   puts w.precip
-  w.each_pair {|k,v| puts k, v }
 end
 
 # You can use WeatherJp::City object
 tokyo.city => WeatherJp::City
 [tokyo.city.longitude, tokyo.city.latitude]
 
-akiba.map {|w| [w.day, w.text] }
+akiba.map {|w| [w.date_text, w.text] }
 
 # or use as simple Array or Hash
 tokyo.to_a
