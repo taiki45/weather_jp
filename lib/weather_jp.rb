@@ -23,12 +23,6 @@ module WeatherJp
       Wrapper.new(city_name).get
     end
 
-    def customize_to_s(&code)
-      Weather::DayWeather.class_eval do
-        define_method(:to_s, &code)
-      end
-    end
-
     def parse(str)
       if request = RequestParser.parser(str)
         get(request.city).get_weather(request.day)
